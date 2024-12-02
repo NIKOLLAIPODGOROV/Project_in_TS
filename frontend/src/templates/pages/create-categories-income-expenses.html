@@ -1,0 +1,48 @@
+<div class="content py-5" id="content">
+    <div class="content-container py-5 px-5">
+        <div class="header d-flex mb-4" style="font-family: RobotoMedium, sans-serif; color: #052C65;">
+            <h1>Создание дохода/расхода</h1>
+        </div>
+        <div class="content-description d-flex flex-column gap-2" id="content-description">
+            <select class="form-select text-secondary" style="width: 397px" id="typeInput"
+                    aria-label="Default select example">
+                <option selected>Тип...</option>
+                <option id="income" value="income">доход</option>
+                <option id="expense" value="expense">расход</option>
+                <span id="typeInput-error" class="error invalid-feedback">Заполните поле тип</span>
+            </select>
+            <select class="form-select text-secondary" style="width: 397px" id="categoryInput"
+                    aria-label="Default select example">
+                <!--
+             <option selected disabled>Категория...</option>
+             <option value="income">2</option>
+             <option value="expense">1</option>
+             -->
+                <span id="categoryInput-error" class="error invalid-feedback">Заполните поле категория</span>
+            </select>
+
+            <div>
+                <input class="content-text d-flex px-3 border rounded-1 "
+                       style="width: 397px; height: 38px; border: 1px solid #CED4DA;"
+                      type="number" placeholder="Сумма в $..." id="amountInput">
+                <span id="amountInput-error" class="error invalid-feedback">Заполните поле сумма</span>
+            </div>
+            <div>
+                <input class="content-text d-flex px-3 border rounded-1 "
+                       style="width: 397px; height: 38px; border: 1px solid #CED4DA;" type="date" placeholder="Дата..."
+                       id="dateInput">
+                <span id="dateInput-error" class="error invalid-feedback">Заполните поле дата</span>
+            </div>
+            <div>
+                <input class="content-text d-flex mb-2 px-3 border rounded-1 "
+                       style="width: 397px; height: 38px; border: 1px solid #CED4DA;" type="text"
+                       placeholder="Комментарий..." id="commentInput">
+                <span id="commentInput-error" class="error invalid-feedback">Заполните поле коментарий</span>
+            </div>
+            <div class="block-buttons d-flex flex-row gap-2" style="font-family: RobotoMedium, sans-serif;">
+                <a href="#" class="btn btn-success" role="button" id="saveIncomeButton">Создать</a>
+                <a class="btn btn-danger" href="/operations" id="canceledButton">Отмена</a>
+            </div>
+        </div>
+    </div>
+</div>

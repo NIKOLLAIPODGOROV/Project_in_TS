@@ -1,0 +1,126 @@
+
+.nav ul {
+    list-style: none;
+}
+
+.nav-item span {
+    font-family: RobotoMedium, sans-serif;
+    font-size: 16px;
+    line-height: 19px;
+    text-align: center;
+    margin-right: 20px;
+}
+
+#data {
+    border: 1px solid white;
+    border-radius: 4px;
+    box-sizing: border-box;
+    text-decoration: #6C757D;
+}
+
+#data1 {
+    border: 1px solid white;
+    border-radius: 4px;
+    box-sizing: border-box;
+    text-decoration: #6C757D;
+}
+
+.nav-item a {
+    border: 1px solid #6C757D;
+    border-radius: 4px;
+    box-sizing: border-box;
+    font-family: RobotoMedium, sans-serif;
+    font-size: 16px;
+    line-height: 19px;
+    color: #6C757D;
+    padding: 9px 12px 9px 12px;
+}
+
+
+.content-income {
+    padding-right: 84px;
+    border-right: 1px solid #D9D9D9;
+}
+
+.content-income-title {
+    font-family: RobotoMedium, sans-serif;
+    font-size: 28px;
+    line-height: 33px;
+    text-align: center;
+}
+
+.content-income-marks {
+    align-items: center;
+    padding-left: 10px;
+    color: #000000;
+    font-family: RobotoMedium, sans-serif;
+    font-size: 12px;
+    line-height: 14px;
+    text-align: left;
+}
+
+.content-income-marks-red-square {
+    border: 1px solid #DC3545;
+    box-sizing: border-box;
+    background: #DC3545;
+    width: 35px;
+    height: 10px;
+}
+
+.content-income-marks-orange-square {
+    border: 1px solid #FD7E14;
+    box-sizing: border-box;
+    background: #FD7E14;
+    width: 35px;
+    height: 10px;
+}
+
+.content-income-marks-yellow-square {
+    border: 1px solid #FFC107;
+    box-sizing: border-box;
+    background: #FFC107;
+    width: 35px;
+    height: 10px;
+}
+
+.content-income-marks-green-square {
+    border: 1px solid #20C997;
+    box-sizing: border-box;
+    background: #20C997;
+    width: 35px;
+    height: 10px;
+}
+
+.content-income-marks-blue-square {
+    border: 1px solid #0D6EFD;
+    box-sizing: border-box;
+    background: #0D6EFD;
+    width: 35px;
+    height: 10px;
+}
+
+.content-expenses {
+    justify-content: start;
+    padding-left: 84px;
+}
+
+.acquisitions1 {
+    display: flex;
+    justify-content: center;
+    align-items: center;
+    width: 360px;
+    height: 360px;
+}
+
+.acquisitions2 {
+    display: flex;
+    justify-content: center;
+    align-items: center;
+    width: 360px;
+    height: 360px;
+}
+
+.content {
+    width: 100%;
+    justify-content: center;
+}

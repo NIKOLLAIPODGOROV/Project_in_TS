@@ -1,0 +1,30 @@
+
+
+
+.popup-container {
+    width: 100%;
+    height: 100%;
+    background-color: rgba(0, 0, 0, 0.6);
+    top: 0;
+    left: 0;
+    z-index: 10;
+}
+
+.content-popup {
+    z-index: 999;
+    height: 184px;
+    top: calc(50% - 92px);
+    left: calc(50% - 265px);
+    background: #FFFFFF;
+    border-radius: 12px;
+    border: 1px solid #CED4DA;
+    padding: 40px 45px;
+}
+
+.content-popup {
+    font-size: 20px;
+    font-weight: 500;
+    line-height: 23px;
+    text-align: center;
+    color: #290661;
+}

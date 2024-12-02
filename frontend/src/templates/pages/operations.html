@@ -1,0 +1,70 @@
+<div class="content id=content px-5 py-5">
+    <div class="content-container py-5 d-flex flex-column">
+        <div class="header d-flex mb-5 pl-0" style="font-family: RobotoMedium, sans-serif; color: #052C65;">
+            <h1 id="title">Доходы и расходы</h1>
+        </div>
+        <div class="block-buttons d-flex flex-row pl-5 mb-5 gap-2">
+            <a type="button" class="btn btn-lg btn-success" id="createCategoryIncome" href="/create-categories-income-expenses">Создать доход</a>
+            <a type="button" class="btn btn-lg btn-danger" id="createCategoryExpense" href="/create-categories-income-expenses">Создать расход</a>
+        </div>
+        <div class="nav d-flex flex-row justify-content-start mb-4">
+            <ul class="d-flex flex-row px-0 gap-3 align-items-center">
+                <li class="nav-item  d-flex flex-row  border-secondary rounded">
+                    <button type="button" class="btn btn-outline-secondary ourPeriod active" id="today">Сегодня</button>
+                </li>
+                <li class="nav-item d-flex flex-row">
+                    <button type="button" class="btn btn-outline-secondary ourPeriod" id="week">Неделя</button>
+                </li>
+                <li class="nav-item d-flex flex-row">
+                    <button type="button" class="btn btn-outline-secondary ourPeriod" id="month">Месяц</button>
+                </li>
+                <li class="nav-item d-flex flex-row">
+                    <button type="button" class="btn btn-outline-secondary ourPeriod" id="year">Год</button>
+                </li>
+                <li class="nav-item d-flex flex-row">
+                    <button type="button" class="btn btn-outline-secondary ourPeriod" id="all">Все</button>
+                </li>
+                <li class="nav-item d-flex flex-row">
+                    <button type="button" class="btn btn-outline-secondary ourPeriod" id="interval">Интервал</button>
+                </li>
+                <li class="nav-item d-flex flex-row align-items-center">
+                    <span>с</span>
+                    <input class=" d-flex text-center pl-0"
+                           style=" height: 38px;" type="date"
+                           placeholder="Дата" id="dateFrom">
+                  <!--  <a class="d-flex flex-row text-decoration-underline" id="data" href="#">Дата</a>-->
+                </li>
+                <li class="nav-item d-flex flex-row align-items-center">
+                    <span class="mr-3">по</span>
+
+                    <input class=" d-flex text-center"
+                           style=" height: 38px;" type="date"
+                           placeholder="Дата" id="dateTo">
+
+                   <!-- <a class="d-flex flex-row text-decoration-underline" id="data1" href="#">Дата</a> -->
+                </li>
+            </ul>
+        </div>
+        <div class="content-income-expenses">
+
+            <table class="table text-start px-1 mx-0 border-start-0 border-end-0" id="operations-table" style="width:1100px;"
+                   cellspacing="0" cellpadding="0">
+                <thead>
+                <tr class="" style="color: #052C65; border-top: 1px solid #DEE2E6">
+                    <th class="text-center" scope="row">№ операции</th>
+                    <th class="text-center" scope="col">Тип</th>
+                    <th class="text-center" scope="col">Категория</th>
+                    <th class="text-center" scope="col">Сумма</th>
+                    <th class="text-center" scope="col">Дата</th>
+                    <th class="text-center" scope="col">Комментарий</th>
+                    <th scope="col"></th>
+                    <th scope="col"></th>
+                </tr>
+                </thead>
+                <tbody id="records">
+
+                </tbody>
+            </table>
+        </div>
+    </div>
+</div>
