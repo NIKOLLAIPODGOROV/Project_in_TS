@@ -19,6 +19,7 @@ export class Router {
     readonly titlePageElement: HTMLElement | null;
     readonly contentPageElement: HTMLElement | null;
     readonly layoutPageElement: HTMLElement | null;
+    public profileNameElement: HTMLElement | null;
     public userName: string | null;
     public userlastName: string | null;
 
@@ -198,19 +199,19 @@ export class Router {
         ];
     }
 
-    private initEvents(): void {
+    initEvents(): void {
         window.addEventListener('DOMContentLoaded', this.activateRoute.bind(this));
         window.addEventListener('popstate', this.activateRoute.bind(this));
         document.addEventListener('click', this.clickHandler.bind(this));
     }
 
-    public async openNewRoute(url): Promise<void> {
+   public async openNewRoute(url): Promise<void> {
         const currentRoute: string = window.location.pathname;
         history.pushState({}, '', url);
         await this.activateRoute(null, currentRoute);
     }
 
-    private async clickHandler(e): Promise<void> {
+   private async clickHandler(e): Promise<void> {
         let element = null;
         if (e.target.nodeName === 'A') {
             element = e.target;
@@ -221,8 +222,8 @@ export class Router {
         if (element) {
             e.preventDefault();
 
-            const currentRoute: string = window.location.pathname;
-            const url: string = element.href.replace(window.location.origin, '');
+            const currentRoute = window.location.pathname;
+            const url = element.href.replace(window.location.origin, '');
             if (!url || (currentRoute === url.replace('#', '')) || url.startsWith('javascript:void(0)')) {
                 return;
             }
@@ -230,53 +231,67 @@ export class Router {
         }
     }
 
-    private async activateRoute(e, oldRoute = null,): Promise<void> {
-        if (oldRoute) {
 
+   private async activateRoute(e, oldRoute = null,): Promise<void> {
+        if (oldRoute) {
             const currentRoute: RouteType | undefined = this.routes.find(item => item.route === oldRoute);
             if (!currentRoute) {
                 window.location.href = '/';
                 return
             }
+
             if (currentRoute.unload && typeof currentRoute.unload === 'function') {
                 currentRoute.unload();
             }
         }
+
         const urlRoute: string = window.location.pathname;
         const newRoute: RouteType | undefined = this.routes.find(item => item.route === urlRoute);
-
-
-
+       if (!newRoute) {
+           window.location.href = '/';
+           return
+       }
         if (newRoute) {
-            if (newRoute.title) {
-                if (this.titlePageElement) {
-                this.titlePageElement.innerText = newRoute.title + ' | Lumincoin Finance';
+            if (!this.titlePageElement ||  this.contentPageElement || this.profileNameElement || this.layoutPageElement) {
+                if (urlRoute === '/') {
+                    return
+                } else {
+                    window.location.href = '/';
+                    return
+                }
             }
+
+            if (newRoute.title) {
+                this.titlePageElement.innerText = newRoute.title + ' | Lumincoin Finance';
             }
 
             if (newRoute.filePathTemplate) {
-
                 let contentBlock: HTMLElement | null = this.contentPageElement;
+                if (!contentBlock) {
+                    window.location.href = '/';
+                    return
+                }
                 if (newRoute.useLayout) {
-                    if (this.contentPageElement) {
-                        this.contentPageElement.innerHTML = await fetch(newRoute.useLayout).then(response => response.text());
-                    }
+                    this.contentPageElement.innerHTML = await fetch(newRoute.useLayout).then(response => response.text());
                     contentBlock = document.getElementById('content');
                     document.body.classList.add('sidebar');
-                    if (this.layoutPageElement) {
-                        this.layoutPageElement.style.display = 'block';
-                    }
+                    this.layoutPageElement.style.display = 'block';
 
-                        this.profileNameElement = document.getElementById('profile-name');
+                    this.profileNameElement = document.getElementById('profile-name');
 
                     if (!this.userName || !this.userlastName) {
-                        let userInfo = AuthUtils.getAuthInfo(AuthUtils.userInfoTokenKey);
+                        let userInfo: string | null = AuthUtils.getAuthInfo(AuthUtils.userInfoTokenKey);
+                        if (!userInfo) {
+                            window.location.href = '/';
+                            return
+                        }
+
                         if (userInfo) {
                             userInfo = JSON.parse(userInfo);
+
                             if (userInfo.name && userInfo.lastName) {
                                 this.userName = userInfo.name;
                                 this.userlastName = userInfo.lastName;
-
                             }
                         }
                     }
@@ -288,12 +303,11 @@ export class Router {
                 }
                 contentBlock.innerHTML = await fetch(newRoute.filePathTemplate).then(response => response.text());
             }
-        }
-        if (newRoute.load && typeof newRoute.load === 'function') {
-            newRoute.load();
-        }
+            if (newRoute.load && typeof newRoute.load === 'function') {
+                newRoute.load();
+            }
 
-    } else {
+        } else {
             console.log('No route found');
             history.pushState({}, '', '/404');
             await this.activateRoute(null);

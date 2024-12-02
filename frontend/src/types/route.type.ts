@@ -1,11 +1,10 @@
 export type RouteType = {
         route: string
-        title: string
-        filePathTemplate: string
-        useLayout: string | boolean
-        styles: string | null
-        scripts: string | null
+        title?: string
+        filePathTemplate?: string
+        useLayout?: string | boolean
+        styles?: string
+        scripts?: string
         load(): void
-        unload(): void
-
+        unload?(): void
 }

@@ -4,7 +4,13 @@
     <option name="autoReloadType" value="SELECTIVE" />
   </component>
   <component name="ChangeListManager">
-    <list default="true" id="5833d54a-adaf-4b38-a1dd-8323fdd44132" name="Changes" comment="" />
+    <list default="true" id="5833d54a-adaf-4b38-a1dd-8323fdd44132" name="Changes" comment="">
+      <change beforePath="$PROJECT_DIR$/.idea/Project_in_TS.iml" beforeDir="false" afterPath="$PROJECT_DIR$/.idea/Project_in_TS.iml" afterDir="false" />
+      <change beforePath="$PROJECT_DIR$/.idea/workspace.xml" beforeDir="false" afterPath="$PROJECT_DIR$/.idea/workspace.xml" afterDir="false" />
+      <change beforePath="$PROJECT_DIR$/frontend/.gitignore" beforeDir="false" afterPath="$PROJECT_DIR$/frontend/.gitignore" afterDir="false" />
+      <change beforePath="$PROJECT_DIR$/frontend/src/router.ts" beforeDir="false" afterPath="$PROJECT_DIR$/frontend/src/router.ts" afterDir="false" />
+      <change beforePath="$PROJECT_DIR$/frontend/src/types/route.type.ts" beforeDir="false" afterPath="$PROJECT_DIR$/frontend/src/types/route.type.ts" afterDir="false" />
+    </list>
     <option name="SHOW_DIALOG" value="false" />
     <option name="HIGHLIGHT_CONFLICTS" value="true" />
     <option name="HIGHLIGHT_NON_ACTIVE_CHANGELIST" value="false" />
@@ -68,6 +74,11 @@
       <workItem from="1733070731190" duration="3078000" />
       <workItem from="1733128004856" duration="180000" />
       <workItem from="1733128989544" duration="56000" />
+      <workItem from="1733129227696" duration="362000" />
+      <workItem from="1733129606991" duration="47000" />
+      <workItem from="1733130371156" duration="740000" />
+      <workItem from="1733140680481" duration="2070000" />
+      <workItem from="1733142902448" duration="2040000" />
     </task>
     <servers />
   </component>
