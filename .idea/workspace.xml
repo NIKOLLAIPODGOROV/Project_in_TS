@@ -5,11 +5,11 @@
   </component>
   <component name="ChangeListManager">
     <list default="true" id="5833d54a-adaf-4b38-a1dd-8323fdd44132" name="Changes" comment="">
-      <change beforePath="$PROJECT_DIR$/.idea/Project_in_TS.iml" beforeDir="false" afterPath="$PROJECT_DIR$/.idea/Project_in_TS.iml" afterDir="false" />
+      <change afterPath="$PROJECT_DIR$/frontend/src/types/user-info.type.ts" afterDir="false" />
       <change beforePath="$PROJECT_DIR$/.idea/workspace.xml" beforeDir="false" afterPath="$PROJECT_DIR$/.idea/workspace.xml" afterDir="false" />
-      <change beforePath="$PROJECT_DIR$/frontend/.gitignore" beforeDir="false" afterPath="$PROJECT_DIR$/frontend/.gitignore" afterDir="false" />
+      <change beforePath="$PROJECT_DIR$/frontend/src/components/auth/login.ts" beforeDir="false" afterPath="$PROJECT_DIR$/frontend/src/components/auth/login.ts" afterDir="false" />
       <change beforePath="$PROJECT_DIR$/frontend/src/router.ts" beforeDir="false" afterPath="$PROJECT_DIR$/frontend/src/router.ts" afterDir="false" />
-      <change beforePath="$PROJECT_DIR$/frontend/src/types/route.type.ts" beforeDir="false" afterPath="$PROJECT_DIR$/frontend/src/types/route.type.ts" afterDir="false" />
+      <change beforePath="$PROJECT_DIR$/frontend/src/utils/auth-utils.ts" beforeDir="false" afterPath="$PROJECT_DIR$/frontend/src/utils/auth-utils.ts" afterDir="false" />
     </list>
     <option name="SHOW_DIALOG" value="false" />
     <option name="HIGHLIGHT_CONFLICTS" value="true" />
@@ -79,6 +79,9 @@
       <workItem from="1733130371156" duration="740000" />
       <workItem from="1733140680481" duration="2070000" />
       <workItem from="1733142902448" duration="2040000" />
+      <workItem from="1733145054937" duration="5000" />
+      <workItem from="1733145415658" duration="216000" />
+      <workItem from="1733146515903" duration="5213000" />
     </task>
     <servers />
   </component>

@@ -1,11 +1,12 @@
-import config from "../config/config.js";
+import config from "../config/config";
+import {UserInfoType} from "../types/user-info.type";
 
 export class AuthUtils {
-    static accessTokenKey = 'accessToken';
-    static refreshTokenKey = 'refreshToken';
-    static userInfoTokenKey = 'userInfo';
+   public static accessTokenKey:string = 'accessToken';
+   public static refreshTokenKey:string = 'refreshToken';
+   public static userInfoTokenKey:string = 'userInfo';
 
-    static setAuthInfo(accessToken, refreshToken, userInfo = null,) {
+    static setAuthInfo(accessToken, refreshToken, userInfo:UserInfoType | null = null):void {
         localStorage.setItem(this.accessTokenKey, accessToken);
         localStorage.setItem(this.refreshTokenKey, refreshToken);
         if (userInfo) {
@@ -13,14 +14,14 @@ export class AuthUtils {
         }
     }
 
-    static removeAuthInfo() {
+   public static removeAuthInfo(): void {
         localStorage.removeItem(this.accessTokenKey);
         localStorage.removeItem(this.refreshTokenKey);
         localStorage.removeItem(this.userInfoTokenKey);
     }
 
 
-    static getAuthInfo(key = null) {
+   public static getAuthInfo(key:string | null = null): UserInfoType | null {
         if (key && [this.accessTokenKey, this.refreshTokenKey, this.userInfoTokenKey].includes(key)) {
             return localStorage.getItem(key);
         } else {
@@ -32,11 +33,11 @@ export class AuthUtils {
         }
     }
 
-    static async updateRefreshToken() {
-        let result = false;
-        const refreshToken = this.getAuthInfo(this.refreshTokenKey);
+   public static async updateRefreshToken() {
+        let result: boolean = false;
+        const refreshToken: UserInfoType | null = this.getAuthInfo(this.refreshTokenKey);
         if (refreshToken) {
-            const response = await fetch(config.host + '/refresh', {
+            const response: Response = await fetch(config.host + '/refresh', {
                 method: 'POST',
                 headers: {
                     'Content-type': 'application/json',
@@ -62,9 +63,7 @@ export class AuthUtils {
         if (!result) {
             this.removeAuthInfo();
         }
-
         return result;
-
     }
 }
 

@@ -14,6 +14,7 @@ import {EditCategoriesExpense} from "./components/edit-categories-expense";
 import {Balance} from "./components/balance";
 import {AuthUtils} from "./utils/auth-utils";
 import {RouteType} from "./types/route.type";
+import {UserInfoType} from "./types/user-info.type";
 
 export class Router {
     readonly titlePageElement: HTMLElement | null;
@@ -252,7 +253,7 @@ export class Router {
            return
        }
         if (newRoute) {
-            if (!this.titlePageElement ||  this.contentPageElement || this.profileNameElement || this.layoutPageElement) {
+            if (!this.titlePageElement || !this.contentPageElement || !this.profileNameElement || !this.layoutPageElement) {
                 if (urlRoute === '/') {
                     return
                 } else {
@@ -279,17 +280,21 @@ export class Router {
 
                     this.profileNameElement = document.getElementById('profile-name');
 
+                    if (!this.profileNameElement){
+                        window.location.href = '/';
+                        return
+                    }
+
                     if (!this.userName || !this.userlastName) {
-                        let userInfo: string | null = AuthUtils.getAuthInfo(AuthUtils.userInfoTokenKey);
-                        if (!userInfo) {
-                            window.location.href = '/';
-                            return
-                        }
+                        let userInfo: UserInfoType = AuthUtils.getAuthInfo(AuthUtils.userInfoTokenKey);
 
                         if (userInfo) {
                             userInfo = JSON.parse(userInfo);
 
                             if (userInfo.name && userInfo.lastName) {
+                                if (!userInfo.name || !userInfo.lastName){
+
+                                }
                                 this.userName = userInfo.name;
                                 this.userlastName = userInfo.lastName;
                             }
@@ -300,6 +305,10 @@ export class Router {
                 } else {
                     document.body.classList.remove('layout');
                     this.layoutPageElement.style.display = 'none';
+                }
+                if(!contentBlock) {
+                    window.location.href = '/';
+                    return
                 }
                 contentBlock.innerHTML = await fetch(newRoute.filePathTemplate).then(response => response.text());
             }
