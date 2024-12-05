@@ -1,13 +1,22 @@
-import {AuthUtils} from "../../utils/auth-utils.js";
-import {HttpUtils} from "../../utils/http-utils.js";
+import {AuthUtils} from "../../utils/auth-utils";
+import {HttpUtils} from "../../utils/http-utils";
+import {RouteType} from "../../types/route.type";
 
 export class SignUp {
+   private fullNameElement: HTMLElement | null;
+   private emailElement: HTMLElement | null;
+   private passwordElement: HTMLElement | null;
+   private passwordRepeatElement: HTMLElement | null;
+   private commonErrorElement: HTMLElement | null;
+    public openNewRoute: RouteType[];
+
     constructor(openNewRoute) {
         this.openNewRoute = openNewRoute;
 
         if (AuthUtils.getAuthInfo('accessToken')) {
-           return this.openNewRoute('/login');
-        }
+            if (typeof this.openNewRoute === 'function') {
+                return this.openNewRoute('/login');
+            }
 
         this.fullNameElement = document.getElementById('full-name');
         this.emailElement = document.getElementById('email');
@@ -19,7 +28,7 @@ export class SignUp {
     }
 
     validateForm() {
-        let isValid = true;
+        let isValid: boolean = true;
 
         if (this.fullNameElement.value && this.fullNameElement.value.match(/^[А-ЯЁ][а-яё]* [А-ЯЁ][а-яё]*$/)) {
             this.fullNameElement.classList.remove('is-invalid');
@@ -52,7 +61,7 @@ export class SignUp {
         return isValid;
     }
 
-    async signUp() {
+   public async signUp() {
         this.commonErrorElement.style.display = 'none';
 
         if (this.validateForm()) {

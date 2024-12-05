@@ -1,6 +1,6 @@
 export class UrlUtils {
-    static  getUrlParam(param) {
-        const urlParams = new URLSearchParams(window.location.search);
+   public static  getUrlParam(param) {
+        const urlParams: URLSearchParams  = new URLSearchParams(window.location.search);
         return urlParams.get(param);
     }
 }

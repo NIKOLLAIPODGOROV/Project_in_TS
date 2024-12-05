@@ -1,15 +1,15 @@
-import config from "../config/config.js"
-import {AuthUtils} from "./auth-utils.js";
+import config from "../config/config"
+import {AuthUtils} from "./auth-utils";
 
 export class HttpUtils {
 
-    static async request(url, method = 'GET', useAuth= true , body = null ) {
-        const result = {
+   public static async request(url: string, method: string = 'GET', useAuth: boolean = true , body: any = null ): Promise<any> {
+        const result:{error:boolean, response:null} = {
             error: false,
             response: null,
         };
 
-        const params = {
+        const params: any = {
             method: method,
             headers: {
                 'Content-type': 'application/json',
@@ -17,7 +17,7 @@ export class HttpUtils {
             },
         };
 
-        let token = null;
+        let token: string | null = null;
 
         if (useAuth) {
             token = localStorage.getItem(AuthUtils.accessTokenKey);
@@ -30,7 +30,7 @@ export class HttpUtils {
             params.body = JSON.stringify(body);
         }
 
-        let response = null;
+        let response: Response | null = null;
         try {
             response = await fetch(config.host + url,params);
             result.response = await response.json();
@@ -44,19 +44,19 @@ export class HttpUtils {
             if (useAuth && response.status === 401) {
                 if (!token) {
                     //1 - токена нет
-                    result.redirect = '/login';
+                    return null;
                 } else {
                     //2 - токен устарел/не валидный (надо обновить)
-                    const updateTokenResult =  await AuthUtils.updateRefreshToken();
+                    const updateTokenResult: boolean =  await AuthUtils.updateRefreshToken();
                     if (updateTokenResult) {
                         //запрос повторно
                         return await this.request(url,method,useAuth,body);
                     } else {
-                        result.redirect = '/login';
+                        return null;
                     }
                 }
             }
-            throw new Error();
+            throw new Error(response.statusText);
         }
 
         return result;

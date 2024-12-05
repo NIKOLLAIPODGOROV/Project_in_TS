@@ -1,28 +1,38 @@
 import {HttpUtils} from "../utils/http-utils";
+import {RouteType} from "../types/route.type";
+import {RequestType} from "../types/request.type";
+import {CreateDataType} from "../types/create-data.type";
 
 export class CreateCategoriesIncomeExpenses {
+readonly categoryTypeElement: HTMLElement | null;
+readonly categorySelectElement: HTMLElement | null;
+readonly amountInputElement: HTMLElement | null;
+readonly dateInputElement: HTMLElement | null;
+readonly commentInputElement: HTMLElement | null;
 
+    public openNewRoute: RouteType[];
     constructor(openNewRoute) {
         this.openNewRoute = openNewRoute;
         document.getElementById('saveIncomeButton').addEventListener('click', this.saveOperation.bind(this));
 
-        this.findElements();
-        this.chosenOperation().then();
-        this.showOperation();
-    }
-
-    findElements() {
         this.categoryTypeElement = document.getElementById('typeInput');
         this.categorySelectElement = document.getElementById('categoryInput');
         this.amountInputElement = document.getElementById('amountInput');
         this.dateInputElement = document.getElementById('dateInput');
         this.commentInputElement = document.getElementById('commentInput');
+
+        this.chosenOperation().then();
+        this.showOperation();
     }
 
-    async chosenOperation() {
-        let that = this;
-        const categoryTypeElement = document.getElementById('typeInput');
-        categoryTypeElement.onchange = async function () {
+   private async chosenOperation(): Promise<any> {
+        let that: this = this;
+        const categoryTypeElement: HTMLElement | null = document.getElementById('typeInput');
+       if (!categoryTypeElement) {
+           return
+       }
+
+        categoryTypeElement.onchange = async function (): Promise<any> {
             if ((categoryTypeElement.value === 'income' || categoryTypeElement.value === 'expense') && categoryTypeElement.value !== 'Тип...') {
                 let result = categoryTypeElement.value === 'income' ? await HttpUtils.request('/categories/income') : await HttpUtils.request('/categories/expense');
                 if (result.redirect) {
@@ -40,11 +50,11 @@ export class CreateCategoriesIncomeExpenses {
     }
 
         validateForm() {
-            let isValid = true;
-            let textInputArray = [this.categoryTypeElement, this.categorySelectElement,
+            let isValid: boolean = true;
+            let textInputArray: HTMLElement[] = [this.categoryTypeElement, this.categorySelectElement,
                 this.amountInputElement, this.dateInputElement,this.commentInputElement];
 
-            for (let i = 0; i < textInputArray.length; i++) {
+            for (let i: number = 0; i < textInputArray.length; i++) {
                 if (textInputArray[i].value) {
                     textInputArray[i].classList.remove('is-invalid');
                 } else {
@@ -56,11 +66,11 @@ export class CreateCategoriesIncomeExpenses {
             return isValid;
         }
 
-    showOperation() {
+    showOperation(): void {
 
-        const categorySelectElement = document.getElementById('categoryInput');
+        const categorySelectElement: HTMLElement = document.getElementById('categoryInput');
         categorySelectElement.innerHTML = '';
-        const categoryOptionBaseElement = document.createElement('option');
+        const categoryOptionBaseElement: HTMLOptionElement = document.createElement('option');
         categoryOptionBaseElement.innerText = 'Категория...';
         categoryOptionBaseElement.style.color = 'text-secondary';
         categoryOptionBaseElement.setAttribute('selected', 'selected');
@@ -68,7 +78,7 @@ export class CreateCategoriesIncomeExpenses {
         if (!this.operationOriginalData) {
             return;
         }
-        for (let i = 0; i < this.operationOriginalData.length; i++) {
+        for (let i: number = 0; i < this.operationOriginalData.length; i++) {
             this.operationOriginalData.id = this.operationOriginalData[i].id;
             this.operationOriginalData.type = this.categoryTypeElement.value;
             this.operationOriginalData.category = this.operationOriginalData[i].title;
@@ -76,7 +86,7 @@ export class CreateCategoriesIncomeExpenses {
             this.operationOriginalData.date = this.dateInputElement.value;
             this.operationOriginalData.comment = this.commentInputElement.value;
 
-            const categoryOptionElement = document.createElement('option');
+            const categoryOptionElement: HTMLOptionElement = document.createElement('option');
             categoryOptionElement.value = this.operationOriginalData[i].id;
             categoryOptionElement.innerText = this.operationOriginalData[i].title;
 
@@ -84,7 +94,7 @@ export class CreateCategoriesIncomeExpenses {
         }
     }
 
-    async saveOperation(e) {
+    async saveOperation(e): Promise<any> {
         e.preventDefault();
         let createData = {};
         if (this.validateForm()) {
@@ -96,7 +106,7 @@ export class CreateCategoriesIncomeExpenses {
                 comment: this.commentInputElement.value
             };
 
-            const result = await HttpUtils.request('/operations', 'POST', true, createData);
+            const result: RequestType = await HttpUtils.request('/operations', 'POST', true, createData);
             if (result.redirect) {
                 return this.openNewRoute(result.redirect);
             }

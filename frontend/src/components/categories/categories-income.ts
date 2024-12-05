@@ -1,20 +1,24 @@
 import {HttpUtils} from "../../utils/http-utils";
 import {AuthUtils} from "../../utils/auth-utils";
+import {RouteType} from "../../types/route.type";
+import {RequestType} from "../../types/request.type";
 
 export class CategoriesIncome {
+    private contentDescriptionElement: HTMLElement | null;
+    public openNewRoute:  RouteType[];
     constructor(openNewRoute) {
         this.openNewRoute = openNewRoute;
-        let token = AuthUtils.getAuthInfo('accessToken');
+        let token: string | {[p: string]: string} = AuthUtils.getAuthInfo('accessToken');
         if (!token) {
-            return this.openNewRoute('/');
+            return ;
         }
         this.getCategory().then();
         this.contentDescriptionElement = document.getElementById('content-description');
     }
 
-    async getCategory() {
+   private async getCategory(): Promise<void> {
 
-        const result = await HttpUtils.request('/categories/income');
+        const result: RequestType = await HttpUtils.request('/categories/income');
 
         if (!result) {
             return alert('Возникла ошибка при запросе категории. Обратитесь в поддержку');
@@ -23,18 +27,18 @@ export class CategoriesIncome {
         await this.showCategory(this.categoryOriginalData);
     }
 
-    showCategory() {
+    showCategory(): void {
 
-        for (let i = 0; i < this.categoryOriginalData.length; i++) {
+        for (let i: number = 0; i < this.categoryOriginalData.length; i++) {
 
-            const cardFirstRowElement = document.createElement('div');
-            const cardCategoryElement = document.createElement('div');
-            const cardBodyCategoryElement = document.createElement('div');
-            const cardTitleCategoryElement = document.createElement('h3');
-            const contentButtonsElement = document.createElement('div');
-            const updateButtonElement = document.createElement('a');
-            const deleteButtonElement = document.createElement('a');
-            const cardSecondRowElement = document.createElement('div');
+            const cardFirstRowElement: HTMLDivElement = document.createElement('div');
+            const cardCategoryElement: HTMLDivElement = document.createElement('div');
+            const cardBodyCategoryElement: HTMLDivElement = document.createElement('div');
+            const cardTitleCategoryElement: HTMLHeadingElement = document.createElement('h3');
+            const contentButtonsElement: HTMLDivElement = document.createElement('div');
+            const updateButtonElement: HTMLAnchorElement = document.createElement('a');
+            const deleteButtonElement: HTMLAnchorElement = document.createElement('a');
+            const cardSecondRowElement: HTMLDivElement = document.createElement('div');
 
 
             cardFirstRowElement.className = 'content-first-row';
@@ -74,8 +78,8 @@ export class CategoriesIncome {
             });
         }
     }
-    openPopup(id) {
-                const popupElement = document.getElementById('popup-container');
+    openPopup(id): void {
+                const popupElement: HTMLElement | null = document.getElementById('popup-container');
                 popupElement.classList.remove('d-none');
         document.getElementById('delete-link').addEventListener('click', () => {
             this.deleteCategory(id).then();
@@ -84,8 +88,8 @@ export class CategoriesIncome {
         document.getElementById('canceled').addEventListener('click', this.showCategories.bind(this));
     }
 
-    async deleteCategory(id) {
-        const result = await HttpUtils.request('/categories/income/' + id, 'DELETE', true);
+   private async deleteCategory(id): Promise<any> {
+        const result: RequestType  = await HttpUtils.request('/categories/income/' + id, 'DELETE', true);
         if (result.redirect) {
             return this.openNewRoute(result.redirect);
         }
@@ -95,8 +99,8 @@ export class CategoriesIncome {
         return this.openNewRoute('/income');
     }
 
-    showCategories() {
-        const popupElement = document.getElementById('popup-container');
+    showCategories(): void {
+        const popupElement: HTMLElement = document.getElementById('popup-container');
         popupElement.classList.add('d-none');
         this.openNewRoute('/income');
     }

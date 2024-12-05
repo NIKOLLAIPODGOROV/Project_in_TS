@@ -1,29 +1,24 @@
 import {HttpUtils} from "../../utils/http-utils";
 import {AuthUtils} from "../../utils/auth-utils";
+import {RouteType} from "../../types/route.type";
+import {RequestType} from "../../types/request.type";
 
 export class CategoriesExpense {
-
+   private contentDescriptionElement: HTMLElement | null,
+    public openNewRoute:  RouteType[];
     constructor(openNewRoute) {
         this.openNewRoute = openNewRoute;
-        let token = AuthUtils.getAuthInfo('accessToken');
+        let token: string | {[p: string]: string} = AuthUtils.getAuthInfo('accessToken');
         if (!token) {
-            return this.openNewRoute('/');
+            return
         }
-        document.getElementsByClassName('edit-link').href = '/edit-categories-income';
-        document.getElementsByClassName('delete-link').href = '/categories-income-delete';
-
-       document.getElementById('delete-link').addEventListener('click', () => {
-           document.getElementById('popup-container').style.display = 'd-block';
-       })
-
         this.getCategory().then();
-
         this.contentDescriptionElement = document.getElementById('content-description');
     }
 
-    async getCategory() {
+   private async getCategory(): Promise<void> {
 
-        const result = await HttpUtils.request('/categories/expense');
+        const result: RequestType = await HttpUtils.request('/categories/expense');
 
         if (!result) {
             return alert('Возникла ошибка при запросе категории. Обратитесь в поддержку');
@@ -32,20 +27,18 @@ export class CategoriesExpense {
         await this.showCategory(this.categoryOriginalData);
     }
 
-    showCategory() {
-        const contentDescriptionElement = document.getElementById('content-description');
+    showCategory(): void {
 
-        for (let i = 0; i < this.categoryOriginalData.length; i++) {
-            this.categoryOriginalData.id = this.categoryOriginalData[i].id;
+        for (let i: number = 0; i < this.categoryOriginalData.length; i++) {
 
-            const cardFirstRowElement = document.createElement('div');
-            const cardCategoryElement = document.createElement('div');
-            const cardBodyCategoryElement = document.createElement('div');
-            const cardTitleCategoryElement = document.createElement('h3');
-            const contentButtonsElement = document.createElement('div');
-            const updateButtonElement = document.createElement('a');
-            const deleteButtonElement = document.createElement('a');
-            const cardSecondRowElement = document.createElement('div');
+            const cardFirstRowElement: HTMLDivElement = document.createElement('div');
+            const cardCategoryElement: HTMLDivElement = document.createElement('div');
+            const cardBodyCategoryElement: HTMLDivElement = document.createElement('div');
+            const cardTitleCategoryElement: HTMLDivElement = document.createElement('h3');
+            const contentButtonsElement: HTMLDivElement = document.createElement('div');
+            const updateButtonElement: HTMLAnchorElement = document.createElement('a');
+            const deleteButtonElement: HTMLAnchorElement = document.createElement('a');
+            const cardSecondRowElement: HTMLDivElement = document.createElement('div');
 
             cardFirstRowElement.className = 'content-first-row';
             cardFirstRowElement.classList.add('d-flex', 'flex-row', 'gap-3',);
@@ -83,20 +76,19 @@ export class CategoriesExpense {
             deleteButtonElement.addEventListener('click',  () => {
                 this.openPopup(this.categoryOriginalData[i].id);
             });
-
         }
     }
-    openPopup(id) {
-        const popupElement = document.getElementById('popup-container');
+    openPopup(id): void {
+        const popupElement: HTMLElement | null = document.getElementById('popup-container');
         popupElement.classList.remove('d-none');
         document.getElementById('delete-link').addEventListener('click', () => {
-            this.deleteCategory(id);
+            this.deleteCategory(id).then();
             popupElement.classList.add('d-none');
         });
         document.getElementById('canceled').addEventListener('click', this.showCategories.bind(this));
     }
-    async deleteCategory(id) {
-        const result = await HttpUtils.request('/categories/expense/' + id, 'DELETE', true);
+   private async deleteCategory(id): Promise<any> {
+        const result: RequestType = await HttpUtils.request('/categories/expense/' + id, 'DELETE', true);
         if (result.redirect) {
             return this.openNewRoute(result.redirect);
         }
@@ -106,8 +98,8 @@ export class CategoriesExpense {
         return this.openNewRoute('/expense');
     }
 
-    showCategories() {
-        const popupElement = document.getElementById('popup-container');
+    showCategories(): void {
+        const popupElement: HTMLElement | null = document.getElementById('popup-container');
         popupElement.classList.add('d-none');
         this.openNewRoute('/expense');
     }

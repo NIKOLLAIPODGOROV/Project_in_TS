@@ -26,7 +26,7 @@ export class OurChartsUtils {
     }
 
     // пирог расхода
-    myChart2(data) {
+    myChart2(data):void {
         this.createChart("ourExpenses", data, 'Расход', 'chartExpenses');
     }
     groupByCategory(acc, curr) {
@@ -52,10 +52,10 @@ export class OurChartsUtils {
             chartStatus.destroy();
         }
 
-        const partsPie = [];
-        const labels = [];
-        const labelsColor = [];
-        const ctx = document.getElementById(canvasId);
+        const partsPie: any = [];
+        const labels: any = [];
+        const labelsColor: any = [];
+        const ctx: HTMLElement = document.getElementById(canvasId);
         const mainPageChartNoData = document.getElementById(noDataElementId);
         console.log(ctx,mainPageChartNoData, canvasId, noDataElementId )
 

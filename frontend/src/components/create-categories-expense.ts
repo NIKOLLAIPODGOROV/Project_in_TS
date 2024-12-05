@@ -1,6 +1,11 @@
 import {HttpUtils} from "../utils/http-utils";
+import {RouteType} from "../types/route.type";
+import {RequestType} from "../types/request.type";
 
 export class CreateCategoriesExpense {
+ readonly titleCategoryInputElement: HTMLElement | null;
+ public  cardTitleInputElement: HTMLElement | null;
+ public openNewRoute: RouteType[];
 
     constructor(openNewRoute) {
         this.openNewRoute = openNewRoute;
@@ -9,12 +14,13 @@ export class CreateCategoriesExpense {
         this.cardTitleInputElement = document.getElementsByClassName('card-title');
     }
 
-    validateForm() {
-        let isValid = true;
+   private validateForm() {
+        let isValid: boolean = true;
 
-        let textInputArray = [this.titleCategoryInputElement];
+        let textInputArray: (HTMLElement | null)[] = [this.titleCategoryInputElement];
 
-        for (let i = 0; i < textInputArray.length; i++) {
+        for (let i: number = 0; i < textInputArray.length; i++) {
+
             if (textInputArray[i].value) {
                 textInputArray[i].classList.remove('is-invalid');
             } else {
@@ -26,15 +32,15 @@ export class CreateCategoriesExpense {
         return isValid;
     }
 
-    async saveCategory(e) {
+   private async saveCategory(e): Promise<any> {
         e.preventDefault();
 
         if (this.validateForm()) {
-            const createData = {
+            const createData: any = {
                 title: this.titleCategoryInputElement.value,
             };
 
-            const result = await HttpUtils.request('/categories/expense', 'POST', true, createData);
+            const result: RequestType | any = await HttpUtils.request('/categories/expense', 'POST', true, createData);
             if (result.redirect) {
                 return this.openNewRoute(result.redirect);
             }

@@ -5,11 +5,28 @@
   </component>
   <component name="ChangeListManager">
     <list default="true" id="5833d54a-adaf-4b38-a1dd-8323fdd44132" name="Changes" comment="">
-      <change afterPath="$PROJECT_DIR$/frontend/src/types/user-info.type.ts" afterDir="false" />
+      <change afterPath="$PROJECT_DIR$/frontend/src/types/body.params.type.ts" afterDir="false" />
+      <change afterPath="$PROJECT_DIR$/frontend/src/types/create-data.type.ts" afterDir="false" />
+      <change afterPath="$PROJECT_DIR$/frontend/src/types/params.type.ts" afterDir="false" />
+      <change afterPath="$PROJECT_DIR$/frontend/src/types/request.type.ts" afterDir="false" />
+      <change afterPath="$PROJECT_DIR$/frontend/src/types/result-response.type.ts" afterDir="false" />
       <change beforePath="$PROJECT_DIR$/.idea/workspace.xml" beforeDir="false" afterPath="$PROJECT_DIR$/.idea/workspace.xml" afterDir="false" />
+      <change beforePath="$PROJECT_DIR$/frontend/.gitignore" beforeDir="false" afterPath="$PROJECT_DIR$/.gitignore" afterDir="false" />
       <change beforePath="$PROJECT_DIR$/frontend/src/components/auth/login.ts" beforeDir="false" afterPath="$PROJECT_DIR$/frontend/src/components/auth/login.ts" afterDir="false" />
+      <change beforePath="$PROJECT_DIR$/frontend/src/components/auth/logout.ts" beforeDir="false" afterPath="$PROJECT_DIR$/frontend/src/components/auth/logout.ts" afterDir="false" />
+      <change beforePath="$PROJECT_DIR$/frontend/src/components/auth/sign-up.ts" beforeDir="false" afterPath="$PROJECT_DIR$/frontend/src/components/auth/sign-up.ts" afterDir="false" />
+      <change beforePath="$PROJECT_DIR$/frontend/src/components/balance.ts" beforeDir="false" afterPath="$PROJECT_DIR$/frontend/src/components/balance.ts" afterDir="false" />
+      <change beforePath="$PROJECT_DIR$/frontend/src/components/categories/categories-expense.ts" beforeDir="false" afterPath="$PROJECT_DIR$/frontend/src/components/categories/categories-expense.ts" afterDir="false" />
+      <change beforePath="$PROJECT_DIR$/frontend/src/components/categories/categories-income.ts" beforeDir="false" afterPath="$PROJECT_DIR$/frontend/src/components/categories/categories-income.ts" afterDir="false" />
+      <change beforePath="$PROJECT_DIR$/frontend/src/components/create-categories-expense.ts" beforeDir="false" afterPath="$PROJECT_DIR$/frontend/src/components/create-categories-expense.ts" afterDir="false" />
+      <change beforePath="$PROJECT_DIR$/frontend/src/components/create-categories-income-expenses.ts" beforeDir="false" afterPath="$PROJECT_DIR$/frontend/src/components/create-categories-income-expenses.ts" afterDir="false" />
+      <change beforePath="$PROJECT_DIR$/frontend/src/components/create-categories-income.ts" beforeDir="false" afterPath="$PROJECT_DIR$/frontend/src/components/create-categories-income.ts" afterDir="false" />
       <change beforePath="$PROJECT_DIR$/frontend/src/router.ts" beforeDir="false" afterPath="$PROJECT_DIR$/frontend/src/router.ts" afterDir="false" />
       <change beforePath="$PROJECT_DIR$/frontend/src/utils/auth-utils.ts" beforeDir="false" afterPath="$PROJECT_DIR$/frontend/src/utils/auth-utils.ts" afterDir="false" />
+      <change beforePath="$PROJECT_DIR$/frontend/src/utils/common-utils.ts" beforeDir="false" />
+      <change beforePath="$PROJECT_DIR$/frontend/src/utils/http-utils.ts" beforeDir="false" afterPath="$PROJECT_DIR$/frontend/src/utils/http-utils.ts" afterDir="false" />
+      <change beforePath="$PROJECT_DIR$/frontend/src/utils/our-charts-utils.ts" beforeDir="false" afterPath="$PROJECT_DIR$/frontend/src/utils/our-charts-utils.ts" afterDir="false" />
+      <change beforePath="$PROJECT_DIR$/frontend/src/utils/url-utils.ts" beforeDir="false" afterPath="$PROJECT_DIR$/frontend/src/utils/url-utils.ts" afterDir="false" />
     </list>
     <option name="SHOW_DIALOG" value="false" />
     <option name="HIGHLIGHT_CONFLICTS" value="true" />
@@ -53,6 +70,11 @@
     &quot;vue.rearranger.settings.migration&quot;: &quot;true&quot;
   }
 }</component>
+  <component name="RecentsManager">
+    <key name="MoveFile.RECENT_KEYS">
+      <recent name="$PROJECT_DIR$" />
+    </key>
+  </component>
   <component name="SpellCheckerSettings" RuntimeDictionaries="0" Folders="0" CustomDictionaries="0" DefaultDictionary="application-level" UseSingleDictionary="true" transferred="true" />
   <component name="TaskManager">
     <task active="true" id="Default" summary="Default task">
@@ -82,10 +104,25 @@
       <workItem from="1733145054937" duration="5000" />
       <workItem from="1733145415658" duration="216000" />
       <workItem from="1733146515903" duration="5213000" />
+      <workItem from="1733151843482" duration="426000" />
+      <workItem from="1733152278814" duration="2254000" />
+      <workItem from="1733311579906" duration="19312000" />
     </task>
     <servers />
   </component>
   <component name="TypeScriptGeneratedFilesManager">
     <option name="version" value="3" />
+  </component>
+  <component name="XDebuggerManager">
+    <breakpoint-manager>
+      <breakpoints>
+        <line-breakpoint enabled="true" type="javascript">
+          <url>file://$PROJECT_DIR$/frontend/src/components/auth/login.ts</url>
+          <line>39</line>
+          <properties lambdaOrdinal="-1" />
+          <option name="timeStamp" value="1" />
+        </line-breakpoint>
+      </breakpoints>
+    </breakpoint-manager>
   </component>
 </project>

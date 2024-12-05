@@ -1,9 +1,18 @@
 
 import {AuthUtils} from "../../utils/auth-utils";
 import {HttpUtils} from "../../utils/http-utils";
+import {RouteType} from "../../types/route.type";
+import {UserInfoType} from "../../types/user-info.type";
+import {ResultResponseType} from "../../types/result-response.type";
 
 
 export class Login {
+    readonly emailElement: HTMLElement | null;
+    readonly passwordElement: HTMLElement | null;
+    readonly rememberMeElement: HTMLElement | null;
+    readonly commonErrorElement: HTMLElement | null;
+
+    public openNewRoute:  RouteType[];
 
     constructor(openNewRoute) {
         this.openNewRoute = openNewRoute;
@@ -13,12 +22,16 @@ export class Login {
         this.rememberMeElement = document.getElementById('remember-me');
         this.commonErrorElement = document.getElementById('common-error');
 
-        document.getElementById('process-button').addEventListener('click', this.login.bind(this));
+       document.getElementById('process-button').addEventListener('click', this.login.bind(this));
 
     }
 
-    validateForm() {
-        let isValid = true;
+   public validateForm():void {
+        let isValid: boolean = true;
+
+        if (!this.emailElement || !this.passwordElement) {
+            return
+        }
 
         if (this.emailElement.value && this.emailElement.value.match(/^\w+([-+.']\w+)*@\w+([-.]\w+)*\.\w+([-.]\w+)*$/)) {
             this.emailElement.classList.remove('is-invalid');
@@ -37,11 +50,15 @@ export class Login {
     }
 
 
-    async login() {
+    async login():Promise<void> {
         this.commonErrorElement.style.display = 'none';
         if (this.validateForm()) {
 
-            const result = await HttpUtils.request('/login', 'POST', false,{
+            if (!this.emailElement || !this.passwordElement) {
+                return
+            }
+
+            const result: ResultResponseType = await HttpUtils.request('/login', 'POST', false,{
                 email: this.emailElement.value,
                 password: this.passwordElement.value,
                 rememberMe: this.rememberMeElement.checked,

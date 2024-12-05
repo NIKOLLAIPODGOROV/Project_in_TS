@@ -14,7 +14,6 @@ import {EditCategoriesExpense} from "./components/edit-categories-expense";
 import {Balance} from "./components/balance";
 import {AuthUtils} from "./utils/auth-utils";
 import {RouteType} from "./types/route.type";
-import {UserInfoType} from "./types/user-info.type";
 
 export class Router {
     readonly titlePageElement: HTMLElement | null;
@@ -223,8 +222,8 @@ export class Router {
         if (element) {
             e.preventDefault();
 
-            const currentRoute = window.location.pathname;
-            const url = element.href.replace(window.location.origin, '');
+            const currentRoute: string = window.location.pathname;
+            const url: string = element.href.replace(window.location.origin, '');
             if (!url || (currentRoute === url.replace('#', '')) || url.startsWith('javascript:void(0)')) {
                 return;
             }
@@ -286,15 +285,12 @@ export class Router {
                     }
 
                     if (!this.userName || !this.userlastName) {
-                        let userInfo: UserInfoType = AuthUtils.getAuthInfo(AuthUtils.userInfoTokenKey);
+                        let userInfo: string | { [p: string]: string } = AuthUtils.getAuthInfo(AuthUtils.userInfoTokenKey);
 
-                        if (userInfo) {
+                        if (userInfo && typeof userInfo === 'string') {
                             userInfo = JSON.parse(userInfo);
 
                             if (userInfo.name && userInfo.lastName) {
-                                if (!userInfo.name || !userInfo.lastName){
-
-                                }
                                 this.userName = userInfo.name;
                                 this.userlastName = userInfo.lastName;
                             }

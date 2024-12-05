@@ -6,7 +6,7 @@ export class AuthUtils {
    public static refreshTokenKey:string = 'refreshToken';
    public static userInfoTokenKey:string = 'userInfo';
 
-    static setAuthInfo(accessToken, refreshToken, userInfo:UserInfoType | null = null):void {
+   public static setAuthInfo(accessToken, refreshToken, userInfo:UserInfoType | null = null):void {
         localStorage.setItem(this.accessTokenKey, accessToken);
         localStorage.setItem(this.refreshTokenKey, refreshToken);
         if (userInfo) {
@@ -21,7 +21,7 @@ export class AuthUtils {
     }
 
 
-   public static getAuthInfo(key:string | null = null): UserInfoType | null {
+   public static getAuthInfo(key:string | null): string | { [p: string]: string } {
         if (key && [this.accessTokenKey, this.refreshTokenKey, this.userInfoTokenKey].includes(key)) {
             return localStorage.getItem(key);
         } else {
@@ -33,9 +33,9 @@ export class AuthUtils {
         }
     }
 
-   public static async updateRefreshToken() {
+   public static async updateRefreshToken(): Promise<boolean> {
         let result: boolean = false;
-        const refreshToken: UserInfoType | null = this.getAuthInfo(this.refreshTokenKey);
+        const refreshToken: string | { [p: string]: string } = this.getAuthInfo(this.refreshTokenKey);
         if (refreshToken) {
             const response: Response = await fetch(config.host + '/refresh', {
                 method: 'POST',
