@@ -1,36 +1,43 @@
 import {HttpUtils} from "../utils/http-utils";
 import {RouteType} from "../types/route.type";
 import {RequestType} from "../types/request.type";
-import {CreateDataType} from "../types/create-data.type";
 
 export class CreateCategoriesIncomeExpenses {
-readonly categoryTypeElement: HTMLElement | null;
-readonly categorySelectElement: HTMLElement | null;
-readonly amountInputElement: HTMLElement | null;
-readonly dateInputElement: HTMLElement | null;
-readonly commentInputElement: HTMLElement | null;
+    readonly categoryTypeElement: HTMLElement | null;
+    readonly categorySelectElement: HTMLElement | null;
+    readonly amountInputElement: HTMLElement | null;
+    readonly dateInputElement: HTMLElement | null;
+    readonly commentInputElement: HTMLElement | null;
+    readonly saveIncomeButtonElement: HTMLElement | null;
+    public operationOriginalData: any[] | null;
 
     public openNewRoute: RouteType[];
-    constructor(openNewRoute) {
+
+    constructor(openNewRoute: RouteType[]) {
+        this.operationOriginalData = null;
         this.openNewRoute = openNewRoute;
-        document.getElementById('saveIncomeButton').addEventListener('click', this.saveOperation.bind(this));
 
         this.categoryTypeElement = document.getElementById('typeInput');
         this.categorySelectElement = document.getElementById('categoryInput');
         this.amountInputElement = document.getElementById('amountInput');
         this.dateInputElement = document.getElementById('dateInput');
         this.commentInputElement = document.getElementById('commentInput');
-
+        this.saveIncomeButtonElement = document.getElementById('saveIncomeButton');
+        if (!this.saveIncomeButtonElement) {
+            return;
+        }
+        this.saveIncomeButtonElement.addEventListener('click', this.saveOperation.bind(this));
         this.chosenOperation().then();
         this.showOperation();
     }
 
-   private async chosenOperation(): Promise<any> {
+    private async chosenOperation(): Promise<any> {
         let that: this = this;
         const categoryTypeElement: HTMLElement | null = document.getElementById('typeInput');
-       if (!categoryTypeElement) {
-           return
-       }
+
+        if (!categoryTypeElement) {
+            return
+        }
 
         categoryTypeElement.onchange = async function (): Promise<any> {
             if ((categoryTypeElement.value === 'income' || categoryTypeElement.value === 'expense') && categoryTypeElement.value !== 'Тип...') {
@@ -49,26 +56,33 @@ readonly commentInputElement: HTMLElement | null;
         return this.operationOriginalData;
     }
 
-        validateForm() {
-            let isValid: boolean = true;
-            let textInputArray: HTMLElement[] = [this.categoryTypeElement, this.categorySelectElement,
-                this.amountInputElement, this.dateInputElement,this.commentInputElement];
+    public validateForm(): boolean {
+        let isValid: boolean = true;
+        if (!this.categoryTypeElement || !this.categorySelectElement || !this.amountInputElement ||
+            !this.dateInputElement || !this.commentInputElement) {
+            return
+        }
+        let textInputArray: HTMLElement[] | null = [this.categoryTypeElement, this.categorySelectElement,
+            this.amountInputElement, this.dateInputElement, this.commentInputElement];
 
-            for (let i: number = 0; i < textInputArray.length; i++) {
-                if (textInputArray[i].value) {
-                    textInputArray[i].classList.remove('is-invalid');
-                } else {
-                    textInputArray[i].classList.add('is-invalid');
-                    isValid = false;
-                }
+        for (let i: number = 0; i < textInputArray.length; i++) {
+            if (textInputArray[i].value) {
+                textInputArray[i].classList.remove('is-invalid');
+            } else {
+                textInputArray[i].classList.add('is-invalid');
+                isValid = false;
             }
-
-            return isValid;
         }
 
-    showOperation(): void {
+        return isValid;
+    }
 
-        const categorySelectElement: HTMLElement = document.getElementById('categoryInput');
+    private showOperation(): void {
+
+        const categorySelectElement: HTMLElement | null = document.getElementById('categoryInput');
+        if (!categorySelectElement) {
+            return
+        }
         categorySelectElement.innerHTML = '';
         const categoryOptionBaseElement: HTMLOptionElement = document.createElement('option');
         categoryOptionBaseElement.innerText = 'Категория...';
@@ -76,7 +90,7 @@ readonly commentInputElement: HTMLElement | null;
         categoryOptionBaseElement.setAttribute('selected', 'selected');
         categorySelectElement.appendChild(categoryOptionBaseElement);
         if (!this.operationOriginalData) {
-            return;
+            return
         }
         for (let i: number = 0; i < this.operationOriginalData.length; i++) {
             this.operationOriginalData.id = this.operationOriginalData[i].id;
@@ -94,9 +108,9 @@ readonly commentInputElement: HTMLElement | null;
         }
     }
 
-    async saveOperation(e): Promise<any> {
+    private async saveOperation(e): Promise<any> {
         e.preventDefault();
-        let createData = {};
+        let createData: any = {};
         if (this.validateForm()) {
             createData = {
                 type: this.categoryTypeElement.value,
@@ -113,7 +127,8 @@ readonly commentInputElement: HTMLElement | null;
             if (!result.response) {
                 return alert('Возникла ошибка при добавлении операции. Обратитесь в поддержку');
             }
-            return this.openNewRoute('/operations');
+            return window.location.href = '/operations';
+            // return this.openNewRoute('/operations');
         }
     }
 }

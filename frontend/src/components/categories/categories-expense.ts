@@ -4,19 +4,23 @@ import {RouteType} from "../../types/route.type";
 import {RequestType} from "../../types/request.type";
 
 export class CategoriesExpense {
-   private contentDescriptionElement: HTMLElement | null,
-    public openNewRoute:  RouteType[];
-    constructor(openNewRoute) {
+    readonly contentDescriptionElement!: HTMLElement | null;
+    public categoryOriginalData: any[] | any;
+    public openNewRoute: RouteType[];
+
+    constructor(openNewRoute: RouteType[]) {
+        this.categoryOriginalData = [];
         this.openNewRoute = openNewRoute;
-        let token: string | {[p: string]: string} = AuthUtils.getAuthInfo('accessToken');
+        let token: string | null | { [p: string]: string | null } = AuthUtils.getAuthInfo('accessToken');
         if (!token) {
+            window.location.href = '/';
             return
         }
         this.getCategory().then();
         this.contentDescriptionElement = document.getElementById('content-description');
     }
 
-   private async getCategory(): Promise<void> {
+    private async getCategory(): Promise<void> {
 
         const result: RequestType = await HttpUtils.request('/categories/expense');
 
@@ -24,10 +28,10 @@ export class CategoriesExpense {
             return alert('Возникла ошибка при запросе категории. Обратитесь в поддержку');
         }
         this.categoryOriginalData = result.response;
-        await this.showCategory(this.categoryOriginalData);
+        this.showCategory();
     }
 
-    showCategory(): void {
+   private showCategory(): void {
 
         for (let i: number = 0; i < this.categoryOriginalData.length; i++) {
 
@@ -43,7 +47,8 @@ export class CategoriesExpense {
             cardFirstRowElement.className = 'content-first-row';
             cardFirstRowElement.classList.add('d-flex', 'flex-row', 'gap-3',);
             cardCategoryElement.className = 'card';
-            cardCategoryElement.style = 'width: 352px', 'height: 121px';
+            cardCategoryElement.style.width = '352px';
+            cardCategoryElement.style.height = '121px';
             cardBodyCategoryElement.className = 'card-body';
             cardTitleCategoryElement.className = 'card-title';
             cardTitleCategoryElement.classList.add('mb-3');
@@ -53,7 +58,7 @@ export class CategoriesExpense {
             updateButtonElement.className = 'update-button';
             updateButtonElement.setAttribute('type', 'button');
             updateButtonElement.setAttribute('id', 'updateButton');
-            updateButtonElement.setAttribute('href', '/edit-categories-expense?id='+ this.categoryOriginalData[i].id);
+            updateButtonElement.setAttribute('href', '/edit-categories-expense?id=' + this.categoryOriginalData[i].id);
             updateButtonElement.classList.add('btn', 'btn-primary', 'edit-link');
             updateButtonElement.innerHTML = 'button';
             updateButtonElement.innerText = 'Редактировать';
@@ -66,6 +71,11 @@ export class CategoriesExpense {
             cardSecondRowElement.className = 'content-second-row';
             cardSecondRowElement.classList.add('d-flex', 'flex-row', 'gap-3', 'mt-3');
 
+            if (!this.contentDescriptionElement) {
+                window.location.href = '/';
+                return
+            }
+
             this.contentDescriptionElement.appendChild(cardFirstRowElement);
             cardFirstRowElement.appendChild(cardCategoryElement);
             cardCategoryElement.appendChild(cardBodyCategoryElement);
@@ -73,21 +83,38 @@ export class CategoriesExpense {
             cardBodyCategoryElement.appendChild(contentButtonsElement);
             cardBodyCategoryElement.appendChild(updateButtonElement);
             cardBodyCategoryElement.appendChild(deleteButtonElement);
-            deleteButtonElement.addEventListener('click',  () => {
+            deleteButtonElement.addEventListener('click', () => {
                 this.openPopup(this.categoryOriginalData[i].id);
             });
         }
     }
-    openPopup(id): void {
+
+   private openPopup(id: any): void {
         const popupElement: HTMLElement | null = document.getElementById('popup-container');
+        if (!popupElement) {
+            window.location.href = '/';
+            return
+        }
         popupElement.classList.remove('d-none');
-        document.getElementById('delete-link').addEventListener('click', () => {
+        const deleteLinkElement: HTMLElement | null = document.getElementById('delete-link');
+        if (!deleteLinkElement) {
+            return
+        }
+
+        deleteLinkElement.addEventListener('click', (): void => {
             this.deleteCategory(id).then();
             popupElement.classList.add('d-none');
         });
-        document.getElementById('canceled').addEventListener('click', this.showCategories.bind(this));
+
+        const canceledElement: HTMLElement | null = document.getElementById('canceled');
+        if (!canceledElement) {
+            return
+        }
+
+        canceledElement.addEventListener('click', this.showCategories.bind(this));
     }
-   private async deleteCategory(id): Promise<any> {
+
+    private async deleteCategory(id: any): Promise<any> {
         const result: RequestType = await HttpUtils.request('/categories/expense/' + id, 'DELETE', true);
         if (result.redirect) {
             return this.openNewRoute(result.redirect);
@@ -95,12 +122,19 @@ export class CategoriesExpense {
         if (!result.response) {
             return alert('Возникла ошибка при удалении категории. Обратитесь в поддержку');
         }
-        return this.openNewRoute('/expense');
+        window.location.href = '/expense';
+        return;
+        //  return this.openNewRoute('/expense');
     }
 
     showCategories(): void {
         const popupElement: HTMLElement | null = document.getElementById('popup-container');
+        if (!popupElement) {
+            window.location.href = '/expense';
+            return;
+        }
         popupElement.classList.add('d-none');
-        this.openNewRoute('/expense');
+        window.location.href = '/expense';
+        // this.openNewRoute('/expense');
     }
 }

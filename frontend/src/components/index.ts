@@ -1,21 +1,39 @@
 import {AuthUtils} from "../utils/auth-utils";
 import {HttpUtils} from "../utils/http-utils";
-import dateFormat from "dateformat";
+import dateFormat from "dateFormat";
 import {OurChartsUtils} from "../utils/our-charts-utils";
+import {RequestType} from "../types/request.type";
+import {RouteType} from "../types/route.type";
 
 export class Index {
+    public showIncomeChartElement: HTMLElement | null;
+    readonly showExpensesChartElement: HTMLElement | null;
+    readonly periodTodayElement: HTMLElement | null;
+    readonly periodWeekElement: HTMLElement | null;
+    readonly periodMonthElement: HTMLElement | null;
+    readonly periodYearElement: HTMLElement | null;
+    readonly periodAllElement: HTMLElement | null;
+    readonly periodIntervalElement: HTMLElement | null;
 
-    constructor(openNewRoute) {
+    public openNewRoute: RouteType[];
+    public ourOperations: any;
+    public OurChartsUtils: any;
+    public chartExpenses: any;
+    public chartIncome: any;
+
+    constructor(openNewRoute: RouteType[]) {
         this.openNewRoute = openNewRoute;
         this.ourOperations = null;
         this.OurChartsUtils = OurChartsUtils;
         this.chartExpenses = null;
         this.chartIncome = null;
 
-        let token = AuthUtils.getAuthInfo('accessToken');
+        let token: string | { [p: string]: string | null } | null = AuthUtils.getAuthInfo('accessToken');
 
         if (!token) {
-            return this.openNewRoute('/login');
+            window.location.href = '/login';
+            return
+            // return this.openNewRoute('/login');
         }
 
         this.showIncomeChartElement = document.getElementById('ourIncome');
@@ -27,7 +45,10 @@ export class Index {
         this.periodYearElement = document.getElementById('year');
         this.periodAllElement = document.getElementById('all');
         this.periodIntervalElement = document.getElementById('interval');
-
+        if (!this.periodTodayElement || !this.periodWeekElement || !this.periodMonthElement ||
+            !this.periodYearElement || !this.periodAllElement || !this.periodIntervalElement) {
+            return
+        }
         this.periodTodayElement.addEventListener('click', this.getPeriodToday.bind(this));
         this.periodWeekElement.addEventListener('click', this.getPeriodWeek.bind(this));
         this.periodMonthElement.addEventListener('click', this.getPeriodMonth.bind(this));
@@ -38,64 +59,70 @@ export class Index {
         this.getOperations().then();
     }
 
-    removeActiveClass() {
-        const btns = document.querySelectorAll('.ourPeriod');
-        btns.forEach((btn) => {
+    private removeActiveClass(): void {
+        const btns: NodeListOf<Element> = document.querySelectorAll('.ourPeriod');
+        btns.forEach((btn): void => {
             btn.classList.remove('active')
         })
     }
 
-    getPeriodToday() {
-        let today = dateFormat(new Date(), 'isoDate');
-        const params = `interval&dateFrom=${today}&dateTo=${today}`;
+    public getPeriodToday(): void {
+        let today: string = dateFormat(new Date(), 'isoDate');
+        const params: string = `interval&dateFrom=${today}&dateTo=${today}`;
         this.removeActiveClass();
         this.getOperations(params).then();
     }
 
-    getPeriodWeek() {
-        const params = 'week';
+    public getPeriodWeek(): void {
+        const params: string = 'week';
         this.removeActiveClass();
         this.getOperations(params).then();
     }
 
-    getPeriodMonth() {
-        const params = 'month';
+    public getPeriodMonth(): void {
+        const params: string = 'month';
         this.removeActiveClass();
         this.getOperations(params).then();
     }
 
-    getPeriodYear() {
-        const params = 'year';
+    public getPeriodYear(): void {
+        const params: string = 'year';
         this.removeActiveClass();
         this.getOperations(params).then();
     }
 
-    getPeriodAll() {
-        const params = 'all';
+    public getPeriodAll(): void {
+        const params: string = 'all';
         this.removeActiveClass();
         this.getOperations(params).then();
     }
 
-    getPeriodInterval() {
+    public getPeriodInterval(): void {
         this.removeActiveClass();
 
-        const dateFromElement = document.getElementById('dateFrom');
-        const dateToElement = document.getElementById('dateTo');
+        const dateFromElement: HTMLElement | null | any = document.getElementById('dateFrom');
+        const dateToElement: HTMLElement | null | any = document.getElementById('dateTo');
 
-        const params = `interval&dateFrom=${dateFromElement.value}&dateTo=${dateToElement.value}`;
+        if (!dateFromElement && typeof dateFromElement === 'object'
+            || !dateToElement && typeof dateToElement === 'object') {
+            window.location.href = '/';
+            return
+        }
+
+        const params: string = `interval&dateFrom=${dateFromElement.value}&dateTo=${dateToElement.value}`;
 
         this.getOperations(params).then();
     }
 
-    async getOperations(params) {
+    private async getOperations(params: string): Promise<any> {
         if (!params) {
-            let today = dateFormat(new Date(), 'isoDate');
+            let today: string = dateFormat(new Date(), 'isoDate');
 
             params = `interval&dateFrom=${today}&dateTo=${today}`;
 
         }
 
-        let result = await HttpUtils.request('/operations?period=' + params);
+        let result: RequestType[] | any = await HttpUtils.request('/operations?period=' + params);
 
         if (result.redirect) {
             return this.openNewRoute(result.redirect);
@@ -105,17 +132,15 @@ export class Index {
             return alert('Возникла ошибка при запросе категории. Обратитесь в поддержку');
         }
         this.ourOperations = result.response;
-       await this.showOurCharts(this.ourOperations);
+        await this.showOurCharts(this.ourOperations);
 
         return this.ourOperations;
     }
 
 
-   async showOurCharts(data) {
-
+    private async showOurCharts(data: any): Promise<void> {
         this.chartIncome = new OurChartsUtils(this.ourOperations);
         this.chartExpenses = new OurChartsUtils(this.ourOperations);
-
     }
 }
 

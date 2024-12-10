@@ -1,15 +1,28 @@
 import {AuthUtils} from "../utils/auth-utils";
 import {HttpUtils} from "../utils/http-utils.js";
 import dateFormat from "dateformat";
+import {RouteType} from "../types/route.type";
+import {RequestType} from "../types/request.type";
 
 export class Operations {
+    readonly recordsElement: HTMLElement | null;
+    readonly periodTodayElement: HTMLElement | null;
+    readonly periodWeekElement: HTMLElement | null;
+    readonly periodMonthElement: HTMLElement | null;
+    readonly periodYearElement: HTMLElement | null;
+    readonly periodAllElement: HTMLElement | null;
+    readonly periodIntervalElement: HTMLElement | null;
 
-    constructor(openNewRoute) {
+    public openNewRoute: RouteType[];
+    public ourOperations: any;
+
+    constructor(openNewRoute: RouteType[]) {
         this.openNewRoute = openNewRoute;
-
-        let token = localStorage.getItem(AuthUtils.accessTokenKey);
+        this.ourOperations = null;
+        let token: string | { [p: string]: string | null } | null = localStorage.getItem(AuthUtils.accessTokenKey);
         if (!token) {
-            return this.openNewRoute('/login');
+            window.location.href = '/login';
+            return
         }
 
         this.recordsElement = document.getElementById('records');
@@ -19,7 +32,10 @@ export class Operations {
         this.periodYearElement = document.getElementById('year');
         this.periodAllElement = document.getElementById('all');
         this.periodIntervalElement = document.getElementById('interval');
-
+        if (!this.periodTodayElement || !this.periodWeekElement || !this.periodMonthElement ||
+            !this.periodYearElement || !this.periodAllElement || !this.periodIntervalElement) {
+            return
+        }
         this.periodTodayElement.addEventListener('click', this.getPeriodToday.bind(this));
         this.periodWeekElement.addEventListener('click', this.getPeriodWeek.bind(this));
         this.periodMonthElement.addEventListener('click', this.getPeriodMonth.bind(this));
@@ -30,49 +46,53 @@ export class Operations {
         this.getOperations().then();
     }
 
-    removeActiveClass() {
-        const btns = document.querySelectorAll('.ourPeriod');
-        btns.forEach((btn) => {
+    private removeActiveClass(): void {
+        const btns: NodeListOf<Element> = document.querySelectorAll('.ourPeriod');
+        btns.forEach((btn): void => {
             btn.classList.remove('active')
         });
     }
 
-    getPeriodToday() {
-        let today = dateFormat(new Date(), 'isoDate');
-       const params = `interval&dateFrom=${today}&dateTo=${today}`;
+    public getPeriodToday(): void {
+        let today: string = dateFormat(new Date(), 'isoDate');
+        const params: string = `interval&dateFrom=${today}&dateTo=${today}`;
         this.removeActiveClass();
         this.getOperations(params).then();
     }
 
-    getPeriodWeek() {
-        const params = 'week';
+   public getPeriodWeek(): void {
+        const params: string = 'week';
         this.removeActiveClass();
         this.getOperations(params).then();
     }
 
-    getPeriodMonth() {
-        const params = 'month';
+   public getPeriodMonth(): void {
+        const params: string = 'month';
         this.removeActiveClass();
         this.getOperations(params).then();
     }
 
-    getPeriodYear() {
-        const params = 'year';
+   public getPeriodYear(): void {
+        const params: string = 'year';
         this.removeActiveClass();
         this.getOperations(params).then();
     }
 
-    getPeriodAll() {
-        const params =  'all';
+   public getPeriodAll(): void {
+        const params: string = 'all';
         this.removeActiveClass();
-          this.getOperations(params).then();
+        this.getOperations(params).then();
     }
 
-    getPeriodInterval() {
+   public getPeriodInterval(): void {
         this.removeActiveClass();
 
-        const dateFromElement = document.getElementById('dateFrom');
-        const dateToElement = document.getElementById('dateTo');
+        const dateFromElement: HTMLElement | null | any = document.getElementById('dateFrom');
+        const dateToElement: HTMLElement | null | any = document.getElementById('dateTo');
+       if (!dateFromElement && typeof dateFromElement === 'object' || !dateToElement && typeof dateToElement === 'object') {
+           window.location.href = '/';
+           return
+       }
 
         const getDatesArray = (dateFromElement, dateToElement) => {
             const arr = [];
@@ -83,22 +103,18 @@ export class Operations {
             return arr;
         };
 
-         const params = `interval&dateFrom=${dateFromElement.value}&dateTo=${dateToElement.value}`;
+        const params: string = `interval&dateFrom=${dateFromElement.value}&dateTo=${dateToElement.value}`;
 
         this.getOperations(params).then();
     }
 
-    async getOperations(params) {
+   private async getOperations(params): Promise<any> {
         if (!params) {
-            let today = dateFormat(new Date(), 'isoDate');
-
-            console.log(today);
+            let today: string = dateFormat(new Date(), 'isoDate');
             params = `interval&dateFrom=${today}&dateTo=${today}`;
-
-           // this.periodTodayElement.classList.add('active')
         }
 
-        let result = await HttpUtils.request('/operations?period=' + params);
+        let result: RequestType[] | any = await HttpUtils.request('/operations?period=' + params);
 
         if (result.redirect) {
             return this.openNewRoute(result.redirect);
@@ -114,16 +130,22 @@ export class Operations {
         return this.ourOperations;
     }
 
-    async showRecord() {
+   private async showRecord(): Promise<any> {
+        if (!this.recordsElement) {
+            return
+        }
         this.recordsElement.innerHTML = '';
         if (this.ourOperations.length > 0) {
-            for (let i = 0; i < this.ourOperations.length; i++) {
+            for (let i: number = 0; i < this.ourOperations.length; i++) {
                 this.ourOperations.category_id = this.ourOperations[i].id;
                 this.ourOperations.type = this.ourOperations[i].type;
                 this.ourOperations.amount = this.ourOperations[i].amount;
                 this.ourOperations.category = this.ourOperations[i].category;
                 this.ourOperations.date = this.ourOperations[i].date;
-                const trElement = document.createElement('tr');
+                const trElement: HTMLElement | null = document.createElement('tr');
+                if (!trElement) {
+                    return
+                }
                 trElement.className = 'text-center';
                 trElement.style.border = 'border-top: 1px solid #DEE2E6';
                 trElement.style.height = '49px';
@@ -159,8 +181,11 @@ export class Operations {
         return this.ourOperations;
     }
 
-    openPopup(id) {
-        const popupElement = document.getElementById('popup-container');
+   private openPopup(id): void {
+        const popupElement: HTMLElement | null = document.getElementById('popup-container');
+        if (!popupElement) {
+            return
+        }
         popupElement.classList.remove('d-none');
         document.getElementById('delete-link').addEventListener('click', async () => {
             await this.deleteOperation(id)
@@ -169,8 +194,8 @@ export class Operations {
         document.getElementById('canceled').addEventListener('click', this.showRecords.bind(this));
     }
 
-    async deleteOperation(id) {
-        const result = await HttpUtils.request('/operations/' + id, 'DELETE', true);
+   private async deleteOperation(id): Promise<any> {
+        const result:RequestType = await HttpUtils.request('/operations/' + id, 'DELETE', true);
         if (result.redirect) {
             return this.openNewRoute(result.redirect);
         }
@@ -180,9 +205,12 @@ export class Operations {
         return this.openNewRoute('/operations');
     }
 
-    showRecords() {
-        const popupElement = document.getElementById('popup-container');
+   private showRecords(): string {
+        const popupElement: HTMLElement | null = document.getElementById('popup-container');
+       if (!popupElement) {
+           return
+       }
         popupElement.classList.add('d-none');
-        return this.openNewRoute('/operations')
+        return window.location.href = '/operations';
     }
 }

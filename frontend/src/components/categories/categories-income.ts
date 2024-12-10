@@ -4,19 +4,22 @@ import {RouteType} from "../../types/route.type";
 import {RequestType} from "../../types/request.type";
 
 export class CategoriesIncome {
-    private contentDescriptionElement: HTMLElement | null;
-    public openNewRoute:  RouteType[];
-    constructor(openNewRoute) {
+    private contentDescriptionElement!: HTMLElement | null;
+    public categoryOriginalData: any[] | any;
+    public openNewRoute: RouteType[];
+
+    constructor(openNewRoute: RouteType[]) {
+        this.categoryOriginalData = [];
         this.openNewRoute = openNewRoute;
-        let token: string | {[p: string]: string} = AuthUtils.getAuthInfo('accessToken');
+        let token: string | null | { [p: string]: string | null } = AuthUtils.getAuthInfo('accessToken');
         if (!token) {
-            return ;
+            return;
         }
         this.getCategory().then();
         this.contentDescriptionElement = document.getElementById('content-description');
     }
 
-   private async getCategory(): Promise<void> {
+    private async getCategory(): Promise<void> {
 
         const result: RequestType = await HttpUtils.request('/categories/income');
 
@@ -24,10 +27,10 @@ export class CategoriesIncome {
             return alert('Возникла ошибка при запросе категории. Обратитесь в поддержку');
         }
         this.categoryOriginalData = result.response;
-        await this.showCategory(this.categoryOriginalData);
+        this.showCategory();
     }
 
-    showCategory(): void {
+   private showCategory(): void {
 
         for (let i: number = 0; i < this.categoryOriginalData.length; i++) {
 
@@ -40,11 +43,11 @@ export class CategoriesIncome {
             const deleteButtonElement: HTMLAnchorElement = document.createElement('a');
             const cardSecondRowElement: HTMLDivElement = document.createElement('div');
 
-
             cardFirstRowElement.className = 'content-first-row';
             cardFirstRowElement.classList.add('d-flex', 'flex-row', 'gap-3',);
             cardCategoryElement.className = 'card';
-            cardCategoryElement.style = 'width: 352px', 'height: 121px';
+            cardCategoryElement.style.width = '352px';
+            cardCategoryElement.style.height = '121px';
             cardBodyCategoryElement.className = 'card-body';
             cardTitleCategoryElement.className = 'card-title';
             cardTitleCategoryElement.setAttribute('id', 'card-title');
@@ -54,7 +57,7 @@ export class CategoriesIncome {
             contentButtonsElement.classList.add('btn', 'd-flex', 'flex-row', 'gap-2');
             updateButtonElement.className = 'update-button';
             updateButtonElement.setAttribute('type', 'button');
-            updateButtonElement.setAttribute('href', '/edit-categories-income?id='+ this.categoryOriginalData[i].id);
+            updateButtonElement.setAttribute('href', '/edit-categories-income?id=' + this.categoryOriginalData[i].id);
             updateButtonElement.classList.add('btn', 'btn-primary', 'edit-link');
             updateButtonElement.innerHTML = 'button';
             updateButtonElement.innerText = 'Редактировать';
@@ -66,6 +69,10 @@ export class CategoriesIncome {
             cardSecondRowElement.className = 'content-second-row';
             cardSecondRowElement.classList.add('d-flex', 'flex-row', 'gap-3', 'mt-3');
 
+            if (!this.contentDescriptionElement) {
+                return
+            }
+
             this.contentDescriptionElement.appendChild(cardFirstRowElement);
             cardFirstRowElement.appendChild(cardCategoryElement);
             cardCategoryElement.appendChild(cardBodyCategoryElement);
@@ -73,35 +80,54 @@ export class CategoriesIncome {
             cardBodyCategoryElement.appendChild(contentButtonsElement);
             cardBodyCategoryElement.appendChild(updateButtonElement);
             cardBodyCategoryElement.appendChild(deleteButtonElement);
-            deleteButtonElement.addEventListener('click',  () => {
-               this.openPopup(this.categoryOriginalData[i].id);
+            deleteButtonElement.addEventListener('click', () => {
+                this.openPopup(this.categoryOriginalData[i].id);
             });
         }
     }
-    openPopup(id): void {
-                const popupElement: HTMLElement | null = document.getElementById('popup-container');
-                popupElement.classList.remove('d-none');
-        document.getElementById('delete-link').addEventListener('click', () => {
+
+   private openPopup(id: any): void {
+        const popupElement: HTMLElement | null = document.getElementById('popup-container');
+        if (!popupElement) {
+            return
+        }
+        popupElement.classList.remove('d-none');
+        const deleteLinkElement: HTMLElement | null = document.getElementById('delete-link');
+        if (!deleteLinkElement) {
+            return
+        }
+
+        deleteLinkElement.addEventListener('click', (): void => {
             this.deleteCategory(id).then();
             popupElement.classList.add('d-none');
         });
-        document.getElementById('canceled').addEventListener('click', this.showCategories.bind(this));
+        const canceledElement: HTMLElement | null = document.getElementById('canceled');
+        if (!canceledElement) {
+            return
+        }
+
+        canceledElement.addEventListener('click', this.showCategories.bind(this));
     }
 
-   private async deleteCategory(id): Promise<any> {
-        const result: RequestType  = await HttpUtils.request('/categories/income/' + id, 'DELETE', true);
+    private async deleteCategory(id: any): Promise<any> {
+        const result: RequestType = await HttpUtils.request('/categories/income/' + id, 'DELETE', true);
         if (result.redirect) {
             return this.openNewRoute(result.redirect);
         }
         if (!result.response) {
             return alert('Возникла ошибка при удалении категории. Обратитесь в поддержку');
         }
-        return this.openNewRoute('/income');
+        return window.location.href = '/income';
+        // return this.openNewRoute('/income');
     }
 
-    showCategories(): void {
-        const popupElement: HTMLElement = document.getElementById('popup-container');
+   private showCategories(): void {
+        const popupElement: HTMLElement | null = document.getElementById('popup-container');
+        if (!popupElement) {
+            return
+        }
         popupElement.classList.add('d-none');
-        this.openNewRoute('/income');
+        window.location.href = '/income';
+       // this.openNewRoute('/income');
     }
 }

@@ -19,7 +19,7 @@ export class Router {
     readonly titlePageElement: HTMLElement | null;
     readonly contentPageElement: HTMLElement | null;
     readonly layoutPageElement: HTMLElement | null;
-    public profileNameElement: HTMLElement | null;
+    readonly profileNameElement: HTMLElement | null;
     public userName: string | null;
     public userlastName: string | null;
 
@@ -29,6 +29,7 @@ export class Router {
         this.titlePageElement = document.getElementById('title');
         this.contentPageElement = document.getElementById('content');
         this.layoutPageElement = document.getElementById('sidebar');
+        this.profileNameElement = document.getElementById('profile-name');
 
         this.userName = null;
         this.userlastName = null;
@@ -40,8 +41,8 @@ export class Router {
                 title: 'Главная',
                 filePathTemplate: '/templates/layout.html',
                 useLayout: './index.html',
-                styles: 'bootstrap.min.css',
-                load: () => {
+                styles: ['bootstrap.min.css'],
+                load: (): void => {
                     new Index(this.openNewRoute.bind(this));
                 }
             },
@@ -50,18 +51,18 @@ export class Router {
                 title: 'Регистрация',
                 filePathTemplate: '/templates/pages/auth/sign-up.html',
                 useLayout: false,
-                load: () => {
+                load: (): void => {
                     new SignUp(this.openNewRoute.bind(this));
                 },
-                unload: () => {
+                unload: (): void => {
                     document.body.classList.remove('sidebar');
                     document.body.style.height = 'auto';
                 },
-                styles: 'bootstrap.min.css',
+                styles: ['bootstrap.min.css'],
             },
             {
                 route: '/logout',
-                load: () => {
+                load: (): void => {
                     new Logout(this.openNewRoute.bind(this));
                 }
             },
@@ -69,7 +70,7 @@ export class Router {
                 route: '/404',
                 filePathTemplate: '/templates/pages/404.html',
                 useLayout: false,
-                load: () => {
+                load: (): void => {
                     new Error();
                 }
             },
@@ -78,21 +79,21 @@ export class Router {
                 title: 'Авторизация',
                 filePathTemplate: '/templates/pages/auth/login.html',
                 useLayout: false,
-                load: () => {
+                load: (): void => {
                     new Login(this.openNewRoute.bind(this));
                 },
-                unload: () => {
+                unload: (): void => {
                     document.body.classList.remove('sidebar');
                     document.body.style.height = 'auto';
                 },
-                styles: 'bootstrap.min.css',
+                styles: ['bootstrap.min.css'],
             },
             {
                 route: '/income',
                 title: 'Приход',
                 filePathTemplate: '../../templates/pages/categories/income.html',
                 useLayout: './index.html',
-                load: () => {
+                load: (): void => {
                     new CategoriesIncome(this.openNewRoute.bind(this));
                 },
                 styles: ['bootstrap.min.css'],
@@ -103,7 +104,7 @@ export class Router {
                 title: 'Создать приход',
                 filePathTemplate: '/templates/pages/create-categories-income.html',
                 useLayout: './index.html',
-                load: () => {
+                load: (): void => {
                     new CreateCategoriesIncome(this.openNewRoute.bind(this));
                 },
                 styles: ['bootstrap.min.css'],
@@ -114,7 +115,7 @@ export class Router {
                 title: 'Создать приход',
                 filePathTemplate: './templates/pages/edit-categories-income.html',
                 useLayout: './index.html',
-                load: () => {
+                load: (): void => {
                     new EditCategoriesIncome(this.openNewRoute.bind(this));
                 },
                 styles: ['bootstrap.min.css'],
@@ -125,7 +126,7 @@ export class Router {
                 title: 'Расход',
                 filePathTemplate: '../../templates/pages/categories/expense.html',
                 useLayout: './index.html',
-                load: () => {
+                load: (): void => {
                     new CategoriesExpense(this.openNewRoute.bind(this));
                 },
                 styles: ['bootstrap.min.css'],
@@ -136,7 +137,7 @@ export class Router {
                 title: 'Создать расход',
                 filePathTemplate: '/templates/pages/create-categories-expense.html',
                 useLayout: './index.html',
-                load: () => {
+                load: (): void => {
                     new CreateCategoriesExpense(this.openNewRoute.bind(this));
                 },
                 styles: ['bootstrap.min.css'],
@@ -147,7 +148,7 @@ export class Router {
                 title: 'Создать приход',
                 filePathTemplate: './templates/pages/edit-categories-expense.html',
                 useLayout: './index.html',
-                load: () => {
+                load: (): void => {
                     new EditCategoriesExpense(this.openNewRoute.bind(this));
                 },
                 styles: ['bootstrap.min.css'],
@@ -158,7 +159,7 @@ export class Router {
                 title: 'Доходы-расходы',
                 filePathTemplate: '/templates/pages/operations.html',
                 useLayout: './index.html',
-                load: () => {
+                load: (): void => {
                     new Operations(this.openNewRoute.bind(this));
                 },
                 styles: ['bootstrap.min.css', 'bootstrap-icons.min.css'],
@@ -169,7 +170,7 @@ export class Router {
                 title: 'Создать операцию доход-расход',
                 filePathTemplate: '/templates/pages/create-categories-income-expenses.html',
                 useLayout: './index.html',
-                load: () => {
+                load: (): void => {
                     new CreateCategoriesIncomeExpenses(this.openNewRoute.bind(this));
                 },
                 styles: ['bootstrap.min.css'],
@@ -180,7 +181,7 @@ export class Router {
                 title: 'Редактировать операцию доход-расход',
                 filePathTemplate: '/templates/pages/edit-categories-income-expenses.html',
                 useLayout: './index.html',
-                load: () => {
+                load: (): void => {
                     new EditCategoriesIncomeExpenses(this.openNewRoute.bind(this));
                 },
                 styles: ['bootstrap.min.css'],
@@ -191,8 +192,8 @@ export class Router {
                 title: 'Баланс',
                 filePathTemplate: './templates/layout.html',
                 useLayout: './index.html',
-                styles: 'bootstrap.min.css',
-                load: () => {
+                styles: ['bootstrap.min.css'],
+                load: (): void => {
                     new Balance(this.openNewRoute.bind(this));
                 }
             },
@@ -205,13 +206,13 @@ export class Router {
         document.addEventListener('click', this.clickHandler.bind(this));
     }
 
-   public async openNewRoute(url): Promise<void> {
+   public async openNewRoute(url: string): Promise<void> {
         const currentRoute: string = window.location.pathname;
         history.pushState({}, '', url);
-        await this.activateRoute(null, currentRoute);
+        await this.activateRoute(currentRoute);
     }
 
-   private async clickHandler(e): Promise<void> {
+   private async clickHandler(e: any): Promise<void> {
         let element = null;
         if (e.target.nodeName === 'A') {
             element = e.target;
@@ -231,8 +232,7 @@ export class Router {
         }
     }
 
-
-   private async activateRoute(e, oldRoute = null,): Promise<void> {
+   private async activateRoute(oldRoute: string | any = null): Promise<void> {
         if (oldRoute) {
             const currentRoute: RouteType | undefined = this.routes.find(item => item.route === oldRoute);
             if (!currentRoute) {
@@ -272,12 +272,10 @@ export class Router {
                     return
                 }
                 if (newRoute.useLayout) {
-                    this.contentPageElement.innerHTML = await fetch(newRoute.useLayout).then(response => response.text());
+                    this.contentPageElement.innerHTML = await fetch(newRoute.useLayout as string).then(response => response.text());
                     contentBlock = document.getElementById('content');
                     document.body.classList.add('sidebar');
                     this.layoutPageElement.style.display = 'block';
-
-                    this.profileNameElement = document.getElementById('profile-name');
 
                     if (!this.profileNameElement){
                         window.location.href = '/';
@@ -285,15 +283,15 @@ export class Router {
                     }
 
                     if (!this.userName || !this.userlastName) {
-                        let userInfo: string | { [p: string]: string } = AuthUtils.getAuthInfo(AuthUtils.userInfoTokenKey);
+                        let userInfo: string | null | { [p: string]: string | null } = AuthUtils.getAuthInfo(AuthUtils.userInfoTokenKey);
 
                         if (userInfo && typeof userInfo === 'string') {
                             userInfo = JSON.parse(userInfo);
+                        }
 
-                            if (userInfo.name && userInfo.lastName) {
+                        if (userInfo && typeof userInfo === 'object' && userInfo.name && userInfo.lastName) {
                                 this.userName = userInfo.name;
                                 this.userlastName = userInfo.lastName;
-                            }
                         }
                     }
                     this.profileNameElement.innerText = this.userName + ' ' + this.userlastName;

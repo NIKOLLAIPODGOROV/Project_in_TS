@@ -14,23 +14,28 @@ export class Login {
 
     public openNewRoute:  RouteType[];
 
-    constructor(openNewRoute) {
+    constructor(openNewRoute:RouteType[]) {
         this.openNewRoute = openNewRoute;
-
+const processButtonElement = document.getElementById('process-button');
         this.emailElement = document.getElementById('email');
         this.passwordElement = document.getElementById('password');
         this.rememberMeElement = document.getElementById('remember-me');
         this.commonErrorElement = document.getElementById('common-error');
 
-       document.getElementById('process-button').addEventListener('click', this.login.bind(this));
+        if (!processButtonElement) {
+            return;
+        }
+
+        processButtonElement.addEventListener('click', this.login.bind(this));
 
     }
 
-   public validateForm():void {
+   public validateForm(): boolean  | string{
         let isValid: boolean = true;
 
-        if (!this.emailElement || !this.passwordElement) {
-            return
+        if (!this.emailElement || !this.passwordElement ) {
+           return window.location.href = '/';
+           // return ;
         }
 
         if (this.emailElement.value && this.emailElement.value.match(/^\w+([-+.']\w+)*@\w+([-.]\w+)*\.\w+([-.]\w+)*$/)) {
@@ -49,16 +54,19 @@ export class Login {
         return isValid;
     }
 
-
     async login():Promise<void> {
-        this.commonErrorElement.style.display = 'none';
+        if (!this.commonErrorElement) {
+            return
+        }
+       this.commonErrorElement .style.display = 'none';
         if (this.validateForm()) {
 
-            if (!this.emailElement || !this.passwordElement) {
+            if (!this.emailElement || !this.passwordElement || !this.rememberMeElement) {
                 return
             }
 
             const result: ResultResponseType = await HttpUtils.request('/login', 'POST', false,{
+
                 email: this.emailElement.value,
                 password: this.passwordElement.value,
                 rememberMe: this.rememberMeElement.checked,
@@ -74,8 +82,9 @@ export class Login {
                 lastName: result.response.user.lastName,
                 id: result.response.user.id,
             });
-
-            this.openNewRoute('/');
+            window.location.href = '/';
+            return
+           // this.openNewRoute('/');
         }
     }
 }

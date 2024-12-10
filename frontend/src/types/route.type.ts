@@ -3,8 +3,8 @@ export type RouteType = {
         title?: string
         filePathTemplate?: string
         useLayout?: string | boolean
-        styles?: string
-        scripts?: string
+        styles?: string[]
+        scripts?: string[]
         load(): void
         unload?(): void
 }

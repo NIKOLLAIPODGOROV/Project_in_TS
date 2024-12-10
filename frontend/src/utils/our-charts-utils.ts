@@ -1,15 +1,15 @@
-import Chart from 'chart.js/auto';
+import Chart, { PieAnimationOptions } from 'chart.js/auto';
 
 export class OurChartsUtils {
-    incomeData = [];
-    expenseData = [];
+    incomeData: any[] = [];
+    expenseData: any[] = [];
 
     // определение палитры цветов
-    colorPalette = ['#0D6EFD', '#FFC107', '#FD7E14', '#DC3545', '#20C997','#6610f2', '#6f42c1', '#e83e8c'];
-    usedColors = []; // массив для хранения использованных цветов
+    colorPalette: string[] = ['#0D6EFD', '#FFC107', '#FD7E14', '#DC3545', '#20C997','#6610f2', '#6f42c1', '#e83e8c'];
+    usedColors: string[] = []; // массив для хранения использованных цветов
 
-    constructor(data) {
-        data.forEach((item) => {
+    constructor(data: any) {
+        data.forEach((item: any): void => {
             if (item.type === 'income') {
                 this.incomeData.push(item);
             } else if (item.type === 'expense') {
@@ -21,16 +21,16 @@ export class OurChartsUtils {
     }
 
     // пирог дохода
-    myChart1(data) {
+    myChart1(data: any): void {
         this.createChart("ourIncome", data, 'Доход', 'chartIncome');
     }
 
     // пирог расхода
-    myChart2(data):void {
+    myChart2(data: any):void {
         this.createChart("ourExpenses", data, 'Расход', 'chartExpenses');
     }
-    groupByCategory(acc, curr) {
-        const index = acc.findIndex(item => item.category === curr.category);
+    groupByCategory(acc: any, curr: any): any {
+        const index: any = acc.findIndex((item: { category: any; }) => item.category === curr.category);
 
         if (index === -1) {
             acc.push({
@@ -45,9 +45,9 @@ export class OurChartsUtils {
         return acc;
     }
     // общая функция для создания пирогов
-    createChart(canvasId, data, label, noDataElementId) {
+    createChart(canvasId: any, data: any, label: any, noDataElementId: any): void {
         // Если на странице используется пирог, удалить его
-        const chartStatus = Chart.getChart(canvasId);
+        const chartStatus: Chart | undefined = Chart.getChart(canvasId);
         if (chartStatus !== undefined) {
             chartStatus.destroy();
         }
@@ -55,8 +55,8 @@ export class OurChartsUtils {
         const partsPie: any = [];
         const labels: any = [];
         const labelsColor: any = [];
-        const ctx: HTMLElement = document.getElementById(canvasId);
-        const mainPageChartNoData = document.getElementById(noDataElementId);
+        const ctx: any  = document.getElementById(canvasId);
+        const mainPageChartNoData: HTMLElement | null = document.getElementById(noDataElementId);
         console.log(ctx,mainPageChartNoData, canvasId, noDataElementId )
 
 // проверка на существование элемента noDataElementId
@@ -72,7 +72,7 @@ export class OurChartsUtils {
         } else {
             mainPageChartNoData.style.display = 'none';
 
-            const data1 = data.reduce(this.groupByCategory, [])
+            const data1: any[] = data.reduce(this.groupByCategory, [])
             data1.forEach(item => {
                 partsPie.push(item.amount);
                 labels.push(item.category);
@@ -84,9 +84,6 @@ export class OurChartsUtils {
                 type: 'pie',
                 data: {
                     labels: labels,
-                    margin: {
-                        bottom: 100,
-                    },
                     datasets: [{
                         label: label,
                         data: partsPie,
@@ -112,7 +109,7 @@ export class OurChartsUtils {
     }
 
     // генерация уникального цвета
-    getUniqueColor() {
+    getUniqueColor(): string | null {
         if (this.usedColors.length === this.colorPalette.length) {
             console.warn("Все цвета уже использованы");
             return this.colorPalette[0]; // возвращаем первый цвет, если все использованы

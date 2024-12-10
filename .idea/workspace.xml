@@ -5,13 +5,7 @@
   </component>
   <component name="ChangeListManager">
     <list default="true" id="5833d54a-adaf-4b38-a1dd-8323fdd44132" name="Changes" comment="">
-      <change afterPath="$PROJECT_DIR$/frontend/src/types/body.params.type.ts" afterDir="false" />
-      <change afterPath="$PROJECT_DIR$/frontend/src/types/create-data.type.ts" afterDir="false" />
-      <change afterPath="$PROJECT_DIR$/frontend/src/types/params.type.ts" afterDir="false" />
-      <change afterPath="$PROJECT_DIR$/frontend/src/types/request.type.ts" afterDir="false" />
-      <change afterPath="$PROJECT_DIR$/frontend/src/types/result-response.type.ts" afterDir="false" />
       <change beforePath="$PROJECT_DIR$/.idea/workspace.xml" beforeDir="false" afterPath="$PROJECT_DIR$/.idea/workspace.xml" afterDir="false" />
-      <change beforePath="$PROJECT_DIR$/frontend/.gitignore" beforeDir="false" afterPath="$PROJECT_DIR$/.gitignore" afterDir="false" />
       <change beforePath="$PROJECT_DIR$/frontend/src/components/auth/login.ts" beforeDir="false" afterPath="$PROJECT_DIR$/frontend/src/components/auth/login.ts" afterDir="false" />
       <change beforePath="$PROJECT_DIR$/frontend/src/components/auth/logout.ts" beforeDir="false" afterPath="$PROJECT_DIR$/frontend/src/components/auth/logout.ts" afterDir="false" />
       <change beforePath="$PROJECT_DIR$/frontend/src/components/auth/sign-up.ts" beforeDir="false" afterPath="$PROJECT_DIR$/frontend/src/components/auth/sign-up.ts" afterDir="false" />
@@ -21,10 +15,18 @@
       <change beforePath="$PROJECT_DIR$/frontend/src/components/create-categories-expense.ts" beforeDir="false" afterPath="$PROJECT_DIR$/frontend/src/components/create-categories-expense.ts" afterDir="false" />
       <change beforePath="$PROJECT_DIR$/frontend/src/components/create-categories-income-expenses.ts" beforeDir="false" afterPath="$PROJECT_DIR$/frontend/src/components/create-categories-income-expenses.ts" afterDir="false" />
       <change beforePath="$PROJECT_DIR$/frontend/src/components/create-categories-income.ts" beforeDir="false" afterPath="$PROJECT_DIR$/frontend/src/components/create-categories-income.ts" afterDir="false" />
+      <change beforePath="$PROJECT_DIR$/frontend/src/components/edit-categories-expense.ts" beforeDir="false" afterPath="$PROJECT_DIR$/frontend/src/components/edit-categories-expense.ts" afterDir="false" />
+      <change beforePath="$PROJECT_DIR$/frontend/src/components/edit-categories-income-expenses.ts" beforeDir="false" afterPath="$PROJECT_DIR$/frontend/src/components/edit-categories-income-expenses.ts" afterDir="false" />
+      <change beforePath="$PROJECT_DIR$/frontend/src/components/edit-categories-income.ts" beforeDir="false" afterPath="$PROJECT_DIR$/frontend/src/components/edit-categories-income.ts" afterDir="false" />
+      <change beforePath="$PROJECT_DIR$/frontend/src/components/index.ts" beforeDir="false" afterPath="$PROJECT_DIR$/frontend/src/components/index.ts" afterDir="false" />
+      <change beforePath="$PROJECT_DIR$/frontend/src/components/operations.ts" beforeDir="false" afterPath="$PROJECT_DIR$/frontend/src/components/operations.ts" afterDir="false" />
       <change beforePath="$PROJECT_DIR$/frontend/src/router.ts" beforeDir="false" afterPath="$PROJECT_DIR$/frontend/src/router.ts" afterDir="false" />
+      <change beforePath="$PROJECT_DIR$/frontend/src/types/create-data.type.ts" beforeDir="false" afterPath="$PROJECT_DIR$/frontend/src/types/create-data.type.ts" afterDir="false" />
+      <change beforePath="$PROJECT_DIR$/frontend/src/types/request.type.ts" beforeDir="false" afterPath="$PROJECT_DIR$/frontend/src/types/request.type.ts" afterDir="false" />
+      <change beforePath="$PROJECT_DIR$/frontend/src/types/result-response.type.ts" beforeDir="false" afterPath="$PROJECT_DIR$/frontend/src/types/result-response.type.ts" afterDir="false" />
+      <change beforePath="$PROJECT_DIR$/frontend/src/types/route.type.ts" beforeDir="false" afterPath="$PROJECT_DIR$/frontend/src/types/route.type.ts" afterDir="false" />
+      <change beforePath="$PROJECT_DIR$/frontend/src/types/user-info.type.ts" beforeDir="false" afterPath="$PROJECT_DIR$/frontend/src/types/user-info.type.ts" afterDir="false" />
       <change beforePath="$PROJECT_DIR$/frontend/src/utils/auth-utils.ts" beforeDir="false" afterPath="$PROJECT_DIR$/frontend/src/utils/auth-utils.ts" afterDir="false" />
-      <change beforePath="$PROJECT_DIR$/frontend/src/utils/common-utils.ts" beforeDir="false" />
-      <change beforePath="$PROJECT_DIR$/frontend/src/utils/http-utils.ts" beforeDir="false" afterPath="$PROJECT_DIR$/frontend/src/utils/http-utils.ts" afterDir="false" />
       <change beforePath="$PROJECT_DIR$/frontend/src/utils/our-charts-utils.ts" beforeDir="false" afterPath="$PROJECT_DIR$/frontend/src/utils/our-charts-utils.ts" afterDir="false" />
       <change beforePath="$PROJECT_DIR$/frontend/src/utils/url-utils.ts" beforeDir="false" afterPath="$PROJECT_DIR$/frontend/src/utils/url-utils.ts" afterDir="false" />
     </list>
@@ -107,22 +109,22 @@
       <workItem from="1733151843482" duration="426000" />
       <workItem from="1733152278814" duration="2254000" />
       <workItem from="1733311579906" duration="19312000" />
+      <workItem from="1733518705499" duration="4368000" />
+      <workItem from="1733567549905" duration="1430000" />
+      <workItem from="1733574779162" duration="14915000" />
+      <workItem from="1733597057106" duration="580000" />
+      <workItem from="1733601378263" duration="1084000" />
+      <workItem from="1733606629150" duration="1455000" />
+      <workItem from="1733749628601" duration="926000" />
+      <workItem from="1733759116564" duration="1833000" />
+      <workItem from="1733776064346" duration="112000" />
+      <workItem from="1733815882252" duration="8178000" />
+      <workItem from="1733839553863" duration="468000" />
+      <workItem from="1733841183256" duration="1982000" />
     </task>
     <servers />
   </component>
   <component name="TypeScriptGeneratedFilesManager">
     <option name="version" value="3" />
-  </component>
-  <component name="XDebuggerManager">
-    <breakpoint-manager>
-      <breakpoints>
-        <line-breakpoint enabled="true" type="javascript">
-          <url>file://$PROJECT_DIR$/frontend/src/components/auth/login.ts</url>
-          <line>39</line>
-          <properties lambdaOrdinal="-1" />
-          <option name="timeStamp" value="1" />
-        </line-breakpoint>
-      </breakpoints>
-    </breakpoint-manager>
   </component>
 </project>

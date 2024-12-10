@@ -1,5 +1,5 @@
 export type CreateDataType = {
-    type: string,
+  type: string
     category_id: string,
     amount: number,
     date: number,

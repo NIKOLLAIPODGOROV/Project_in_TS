@@ -1,25 +1,43 @@
 import {HttpUtils} from "../utils/http-utils";
 import {UrlUtils} from "../utils/url-utils";
+import {RouteType} from "../types/route.type";
+import {RequestType} from "../types/request.type";
 
 export class EditCategoriesIncomeExpenses {
-    constructor(openNewRoute) {
-        this.openNewRoute = openNewRoute;
-        document.getElementById('updateOperation').addEventListener('click', this.updateOperation.bind(this));
+    readonly categoryTypeElement: HTMLElement | null;
+    readonly categorySelectElement: HTMLElement | null;
+    readonly amountInputElement: HTMLElement | null;
+    readonly dateInputElement: HTMLElement | null;
+    readonly commentInputElement: HTMLElement | null;
+    readonly updateOperationElement: HTMLElement | null;
+
+
+    private operationOriginalData: any[] | null;
+    public openNewRoute: RouteType[];
+
+
+    constructor(openNewRoute: RouteType[]) {
         this.operationOriginalData = null;
+        this.openNewRoute = openNewRoute;
 
         this.categoryTypeElement = document.getElementById('typeInput');
         this.categorySelectElement = document.getElementById('categoryInput');
         this.amountInputElement = document.getElementById('amountInput');
         this.dateInputElement = document.getElementById('dateInput');
         this.commentInputElement = document.getElementById('commentInput');
+        this.updateOperationElement = document.getElementById('updateOperation');
+        if (!this.updateOperationElement) {
+            return
+        }
 
+        this.updateOperationElement.addEventListener('click', this.updateOperation.bind(this));
         this.getOperation().then();
     }
 
-    async getOperation() {
-        const id = UrlUtils.getUrlParam('id');
+    private async getOperation(): Promise<any> {
+        const id: string = UrlUtils.getUrlParam('id');
 
-        const result = await HttpUtils.request('/operations/' + id);
+        const result: RequestType = await HttpUtils.request('/operations/' + id);
         console.log(result);
 
         if (result.redirect) {
@@ -55,10 +73,10 @@ export class EditCategoriesIncomeExpenses {
         return this.operationOriginalData;
     }
 
-    async chosenOperation(data) {
-        let operations;
+    private async chosenOperation(data): Promise<any> {
+        let operations: any;
         if (data.type === 'income' || data.type === 'expense') {
-            let result =
+            let result: RequestType =
                 data.type === 'income'
                     ? await HttpUtils.request('/categories/income')
                     : await HttpUtils.request('/categories/expense');
@@ -73,12 +91,11 @@ export class EditCategoriesIncomeExpenses {
         }
 
         this.showOperation(data.category, operations);
-        // return this.operationOriginalData1;
     }
 
-    showOperation(category, operations) {
+    showOperation(category: string, operations: any) {
 
-        for (let i = 0; i < operations.length; i++) {
+        for (let i: number = 0; i < operations.length; i++) {
 
             operations.category = operations[i].title;
             const categoryOptionElement = document.createElement('option');
@@ -94,10 +111,14 @@ export class EditCategoriesIncomeExpenses {
         return operations;
     }
 
-    validateForm() {
-        let isValid = true;
+    validateForm(): boolean {
+        let isValid: boolean = true;
 
-        let textInputArray = [
+        if (!textInputArray) {
+            return
+        }
+
+        let textInputArray: any[] | null = [
             this.categoryTypeElement,
             this.categorySelectElement,
             this.amountInputElement,
@@ -105,7 +126,7 @@ export class EditCategoriesIncomeExpenses {
             this.commentInputElement,
         ];
 
-        for (let i = 0; i < textInputArray.length; i++) {
+        for (let i: number = 0; i < textInputArray.length; i++) {
             if (textInputArray[i].value) {
                 textInputArray[i].classList.remove('is-invalid');
             } else {
@@ -116,10 +137,10 @@ export class EditCategoriesIncomeExpenses {
         return isValid;
     }
 
-    async updateOperation() {
+    private async updateOperation(): Promise<any> {
 
         if (this.validateForm()) {
-            let changedData = {
+            let changedData: any = {
                 type: null,
                 amount: null,
                 date: null,
@@ -159,7 +180,7 @@ export class EditCategoriesIncomeExpenses {
                     changedData.comment = this.operationOriginalData.comment;
                 }
 
-                const idOperation =  UrlUtils.getUrlParam('id');
+                const idOperation: string = UrlUtils.getUrlParam('id');
 
                 let result = await HttpUtils.request('/operations/' + idOperation, 'PUT', true, changedData);
                 if (result.redirect) {
@@ -169,7 +190,8 @@ export class EditCategoriesIncomeExpenses {
                 if (!result.response) {
                     return alert('Возникла ошибка при запросе операции. Обратитесь в поддержку');
                 }
-                return this.openNewRoute('/operations');
+                return window.location.href = '/operations';
+                // return this.openNewRoute('/operations');
             }
         }
     }

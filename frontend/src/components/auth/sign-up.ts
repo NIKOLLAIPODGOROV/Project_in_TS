@@ -3,32 +3,41 @@ import {HttpUtils} from "../../utils/http-utils";
 import {RouteType} from "../../types/route.type";
 
 export class SignUp {
-   private fullNameElement: HTMLElement | null;
-   private emailElement: HTMLElement | null;
-   private passwordElement: HTMLElement | null;
-   private passwordRepeatElement: HTMLElement | null;
-   private commonErrorElement: HTMLElement | null;
+    readonly fullNameElement!: HTMLElement | null;
+    readonly emailElement!: HTMLElement | null;
+    readonly passwordElement!: HTMLElement | null;
+    readonly passwordRepeatElement!: HTMLElement | null;
+    readonly commonErrorElement!: HTMLElement | null;
+    readonly processButtonElement!: HTMLElement | null;
     public openNewRoute: RouteType[];
 
-    constructor(openNewRoute) {
+    constructor(openNewRoute: RouteType[]) {
         this.openNewRoute = openNewRoute;
 
         if (AuthUtils.getAuthInfo('accessToken')) {
-            if (typeof this.openNewRoute === 'function') {
-                return this.openNewRoute('/login');
-            }
-
+            window.location.href = '/login';
+            return;
+        }
+        this.processButtonElement = document.getElementById('process-button');
         this.fullNameElement = document.getElementById('full-name');
         this.emailElement = document.getElementById('email');
         this.passwordElement = document.getElementById('password');
         this.passwordRepeatElement = document.getElementById('password-repeat');
         this.commonErrorElement = document.getElementById('common-error');
 
-        document.getElementById('process-button').addEventListener('click', this.signUp.bind(this));
+        if (!this.processButtonElement) {
+            return
+        }
+        this.processButtonElement.addEventListener('click', this.signUp.bind(this));
     }
 
-    validateForm() {
+   public validateForm(): boolean {
         let isValid: boolean = true;
+        if (!this.fullNameElement || !this.emailElement ||
+            !this.passwordElement || !this.passwordRepeatElement) {
+                window.location.href = '/login';
+            return;
+        }
 
         if (this.fullNameElement.value && this.fullNameElement.value.match(/^[А-ЯЁ][а-яё]* [А-ЯЁ][а-яё]*$/)) {
             this.fullNameElement.classList.remove('is-invalid');
@@ -61,7 +70,11 @@ export class SignUp {
         return isValid;
     }
 
-   public async signUp() {
+    public async signUp(): Promise<void> {
+
+        if (!this.commonErrorElement) {
+            return;
+        }
         this.commonErrorElement.style.display = 'none';
 
         if (this.validateForm()) {
@@ -84,7 +97,8 @@ export class SignUp {
             });
 
             if (resultLogin.error || !resultLogin.response) {
-                this.openNewRoute('/login');
+                window.location.href = '/login';
+                // this.openNewRoute('/login');
             } else {
                 AuthUtils.setAuthInfo(
                     resultLogin.response.tokens.accessToken,
@@ -95,7 +109,8 @@ export class SignUp {
                         name: result.response.user.name,
                         lastName: result.response.user.lastName
                     });
-                this.openNewRoute('/');
+                window.location.href = '/';
+                //  this.openNewRoute('/');
             }
         }
     }
