@@ -1,5 +1,6 @@
 export type UserInfoType = {
     userInfo?:  string | { [p: string]: string | null },
+   email?: string | null,
     name?: string | null,
     lastName?: string | null,
     id?: number | null,

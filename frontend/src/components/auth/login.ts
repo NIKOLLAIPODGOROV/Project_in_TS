@@ -7,9 +7,9 @@ import {ResultResponseType} from "../../types/result-response.type";
 
 
 export class Login {
-    readonly emailElement: HTMLElement | null;
-    readonly passwordElement: HTMLElement | null;
-    readonly rememberMeElement: HTMLElement | null;
+    readonly emailElement: HTMLInputElement | null;
+    readonly passwordElement: HTMLInputElement | null;
+    readonly rememberMeElement: HTMLInputElement | null;
     readonly commonErrorElement: HTMLElement | null;
 
     public openNewRoute:  RouteType[];
@@ -17,9 +17,9 @@ export class Login {
     constructor(openNewRoute:RouteType[]) {
         this.openNewRoute = openNewRoute;
 const processButtonElement = document.getElementById('process-button');
-        this.emailElement = document.getElementById('email');
-        this.passwordElement = document.getElementById('password');
-        this.rememberMeElement = document.getElementById('remember-me');
+        this.emailElement = document.getElementById('email') as HTMLInputElement;
+        this.passwordElement = document.getElementById('password') as HTMLInputElement;
+        this.rememberMeElement = document.getElementById('remember-me') as HTMLInputElement;
         this.commonErrorElement = document.getElementById('common-error');
 
         if (!processButtonElement) {

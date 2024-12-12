@@ -2,18 +2,19 @@ import {HttpUtils} from "../utils/http-utils";
 import {UrlUtils} from "../utils/url-utils";
 import {RouteType} from "../types/route.type";
 import {RequestType} from "../types/request.type";
+import {OperationOriginalDataType} from "../types/operation-original-data.type";
 
 export class EditCategoriesIncome {
-    readonly titleCategoryInputElement: HTMLElement | null;
+    readonly titleCategoryInputElement: HTMLInputElement | null;
     readonly updateButtonElement: HTMLElement | null;
-    public categoryOriginalData: any[] | null;
+    public categoryOriginalData: OperationOriginalDataType | any;
     public openNewRoute: RouteType[];
 
     constructor(openNewRoute: RouteType[]) {
         this.categoryOriginalData = [];
         this.openNewRoute = openNewRoute;
 
-        this.titleCategoryInputElement = document.getElementById('titleCategoryInput');
+        this.titleCategoryInputElement = document.getElementById('titleCategoryInput') as HTMLInputElement;
         this.updateButtonElement = document.getElementById('updateButton');
         if (!this.updateButtonElement) {
             return;
@@ -24,7 +25,7 @@ export class EditCategoriesIncome {
     }
 
    private async getCategory(): Promise<any> {
-        const id: string = UrlUtils.getUrlParam('id');
+        const id: string | null = UrlUtils.getUrlParam('id');
         const result: RequestType =  await HttpUtils.request('/categories/income/' + id );
         if (result.redirect) {
             return this.openNewRoute(result.redirect);
@@ -33,17 +34,21 @@ export class EditCategoriesIncome {
             return alert('Возникла ошибка при запросе категории. Обратитесь в поддержку');
         }
         this.categoryOriginalData = result.response;
+        if (!this.titleCategoryInputElement || !this.categoryOriginalData) {
+            return
+        }
+
         if (this.titleCategoryInputElement.value !== this.categoryOriginalData.title) {
            this.titleCategoryInputElement.value = this.categoryOriginalData.title;
         }
     }
 
-   public validateForm(): boolean {
+   public validateForm(): boolean | undefined {
         let isValid: boolean = true;
         if (!this.titleCategoryInputElement) {
             return
         }
-        let textInputArray: HTMLElement[] | null  = [this.titleCategoryInputElement];
+        let textInputArray: HTMLInputElement[] | null  = [this.titleCategoryInputElement];
 
         for (let i: number = 0; i < textInputArray.length; i++) {
             if (textInputArray[i].value) {
@@ -56,9 +61,9 @@ export class EditCategoriesIncome {
         return isValid;
     }
 
-   private async updateCategory(e): Promise<any> {
+   private async updateCategory(e:any): Promise<any> {
         e.preventDefault();
-        const id: string = UrlUtils.getUrlParam('id');
+        const id: string | null = UrlUtils.getUrlParam('id');
         if (this.validateForm()) {
             let changedData: {title:any[] | null}  = {title: null,};
 
@@ -66,6 +71,9 @@ export class EditCategoriesIncome {
                 return
             }
             if (Object.keys(changedData).length > 0) {
+                if (!this.titleCategoryInputElement || !this.categoryOriginalData) {
+                    return
+                }
                 if (this.titleCategoryInputElement.value !== this.categoryOriginalData ) {
                     changedData.title = this.titleCategoryInputElement.value;
                     changedData.id = this.categoryOriginalData.id;

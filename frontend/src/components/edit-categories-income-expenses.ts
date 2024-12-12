@@ -2,17 +2,18 @@ import {HttpUtils} from "../utils/http-utils";
 import {UrlUtils} from "../utils/url-utils";
 import {RouteType} from "../types/route.type";
 import {RequestType} from "../types/request.type";
+import {OperationOriginalDataType} from "../types/operation-original-data.type";
 
 export class EditCategoriesIncomeExpenses {
-    readonly categoryTypeElement: HTMLElement | null;
-    readonly categorySelectElement: HTMLElement | null;
-    readonly amountInputElement: HTMLElement | null;
-    readonly dateInputElement: HTMLElement | null;
-    readonly commentInputElement: HTMLElement | null;
+    readonly categoryTypeElement: HTMLInputElement | null;
+    readonly categorySelectElement: HTMLInputElement | null;
+    readonly amountInputElement: HTMLInputElement | null;
+    readonly dateInputElement: HTMLInputElement | null;
+    readonly commentInputElement: HTMLInputElement | null;
     readonly updateOperationElement: HTMLElement | null;
 
 
-    private operationOriginalData: any[] | null;
+    private operationOriginalData: OperationOriginalDataType | any;
     public openNewRoute: RouteType[];
 
 
@@ -20,11 +21,11 @@ export class EditCategoriesIncomeExpenses {
         this.operationOriginalData = null;
         this.openNewRoute = openNewRoute;
 
-        this.categoryTypeElement = document.getElementById('typeInput');
-        this.categorySelectElement = document.getElementById('categoryInput');
-        this.amountInputElement = document.getElementById('amountInput');
-        this.dateInputElement = document.getElementById('dateInput');
-        this.commentInputElement = document.getElementById('commentInput');
+        this.categoryTypeElement = document.getElementById('typeInput') as HTMLInputElement;
+        this.categorySelectElement = document.getElementById('categoryInput') as HTMLInputElement;
+        this.amountInputElement = document.getElementById('amountInput') as HTMLInputElement;
+        this.dateInputElement = document.getElementById('dateInput') as HTMLInputElement;
+        this.commentInputElement = document.getElementById('commentInput') as HTMLInputElement;
         this.updateOperationElement = document.getElementById('updateOperation');
         if (!this.updateOperationElement) {
             return
@@ -35,7 +36,7 @@ export class EditCategoriesIncomeExpenses {
     }
 
     private async getOperation(): Promise<any> {
-        const id: string = UrlUtils.getUrlParam('id');
+        const id: string | null = UrlUtils.getUrlParam('id');
 
         const result: RequestType = await HttpUtils.request('/operations/' + id);
         console.log(result);
@@ -49,16 +50,35 @@ export class EditCategoriesIncomeExpenses {
             );
         }
         this.operationOriginalData = result.response;
-        console.log(this.operationOriginalData);
-
-        if (this.operationOriginalData.type === 'income') {
-            document.getElementById('income').setAttribute('selected', 'selected');
-            this.categoryTypeElement.value = 'income';
-        } else if (this.operationOriginalData.type === 'expense') {
-            document.getElementById('expense').setAttribute('selected', 'selected');
-            this.categoryTypeElement.value = 'expense';
+        if (!this.operationOriginalData) {
+            return
         }
 
+        if (this.operationOriginalData.type === 'income') {
+            const incomeElement: HTMLElement | null = document.getElementById('income');
+            if (!incomeElement) {
+                return
+            }
+            incomeElement.setAttribute('selected', 'selected');
+            if (!this.categoryTypeElement) {
+                return
+            }
+            this.categoryTypeElement.value = 'income';
+        } else if (this.operationOriginalData.type === 'expense') {
+
+            const expenseElement: HTMLElement | null = document.getElementById('expense');
+            if (!expenseElement) {
+                return
+            }
+            expenseElement.setAttribute('selected', 'selected');
+            if (!this.categoryTypeElement) {
+                return
+            }
+            this.categoryTypeElement.value = 'expense';
+        }
+        if (!this.amountInputElement || !this.dateInputElement || !this.commentInputElement) {
+            return
+        }
         if (this.amountInputElement.value !== this.operationOriginalData.amount) {
             this.amountInputElement.value = +this.operationOriginalData.amount;
         }
@@ -102,8 +122,14 @@ export class EditCategoriesIncomeExpenses {
             categoryOptionElement.value = operations[i].id;
             categoryOptionElement.innerText = operations[i].title;
             if (operations[i].title === category) {
+                if (!this.categorySelectElement) {
+                    return
+                }
                 this.categorySelectElement.value = operations[i].id;
                 categoryOptionElement.setAttribute('selected', 'selected');
+            }
+            if (!this.categorySelectElement) {
+                return
             }
             this.categorySelectElement.appendChild(categoryOptionElement);
         }
@@ -111,13 +137,8 @@ export class EditCategoriesIncomeExpenses {
         return operations;
     }
 
-    validateForm(): boolean {
+    public validateForm(): boolean {
         let isValid: boolean = true;
-
-        if (!textInputArray) {
-            return
-        }
-
         let textInputArray: any[] | null = [
             this.categoryTypeElement,
             this.categorySelectElement,
@@ -148,7 +169,13 @@ export class EditCategoriesIncomeExpenses {
                 category_id: null,
             };
             if (Object.keys(changedData).length > 0) {
-
+                if (!this.categoryTypeElement || !this.categorySelectElement ||
+                    !this.amountInputElement || !this.dateInputElement || !this.commentInputElement) {
+                    return
+                }
+                if (!this.operationOriginalData) {
+                    return
+                }
                 if (this.categoryTypeElement.value !== this.operationOriginalData.type) {
                     changedData.type = this.categoryTypeElement.value;
                 } else {
@@ -180,7 +207,7 @@ export class EditCategoriesIncomeExpenses {
                     changedData.comment = this.operationOriginalData.comment;
                 }
 
-                const idOperation: string = UrlUtils.getUrlParam('id');
+                const idOperation: string | null = UrlUtils.getUrlParam('id');
 
                 let result = await HttpUtils.request('/operations/' + idOperation, 'PUT', true, changedData);
                 if (result.redirect) {

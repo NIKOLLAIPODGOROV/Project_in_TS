@@ -8,12 +8,12 @@ import {RouteType} from "../types/route.type";
 export class Index {
     public showIncomeChartElement: HTMLElement | null;
     readonly showExpensesChartElement: HTMLElement | null;
-    readonly periodTodayElement: HTMLElement | null;
-    readonly periodWeekElement: HTMLElement | null;
-    readonly periodMonthElement: HTMLElement | null;
-    readonly periodYearElement: HTMLElement | null;
-    readonly periodAllElement: HTMLElement | null;
-    readonly periodIntervalElement: HTMLElement | null;
+    readonly periodTodayElement!: HTMLInputElement | null;
+    readonly periodWeekElement!: HTMLInputElement | null;
+    readonly periodMonthElement!: HTMLInputElement | null;
+    readonly periodYearElement!: HTMLInputElement | null;
+    readonly periodAllElement!: HTMLInputElement | null;
+    readonly periodIntervalElement!: HTMLInputElement | null;
 
     public openNewRoute: RouteType[];
     public ourOperations: any;
@@ -27,6 +27,8 @@ export class Index {
         this.OurChartsUtils = OurChartsUtils;
         this.chartExpenses = null;
         this.chartIncome = null;
+        this.showIncomeChartElement = null;
+        this.showExpensesChartElement = null;
 
         let token: string | { [p: string]: string | null } | null = AuthUtils.getAuthInfo('accessToken');
 
@@ -39,12 +41,12 @@ export class Index {
         this.showIncomeChartElement = document.getElementById('ourIncome');
         this.showExpensesChartElement = document.getElementById('ourExpenses');
 
-        this.periodTodayElement = document.getElementById('today');
-        this.periodWeekElement = document.getElementById('week');
-        this.periodMonthElement = document.getElementById('month');
-        this.periodYearElement = document.getElementById('year');
-        this.periodAllElement = document.getElementById('all');
-        this.periodIntervalElement = document.getElementById('interval');
+        this.periodTodayElement = document.getElementById('today') as HTMLInputElement;
+        this.periodWeekElement = document.getElementById('week') as HTMLInputElement;
+        this.periodMonthElement = document.getElementById('month') as HTMLInputElement;
+        this.periodYearElement = document.getElementById('year') as HTMLInputElement;
+        this.periodAllElement = document.getElementById('all') as HTMLInputElement;
+        this.periodIntervalElement = document.getElementById('interval') as HTMLInputElement;
         if (!this.periodTodayElement || !this.periodWeekElement || !this.periodMonthElement ||
             !this.periodYearElement || !this.periodAllElement || !this.periodIntervalElement) {
             return

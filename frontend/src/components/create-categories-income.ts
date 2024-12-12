@@ -3,11 +3,11 @@ import {RouteType} from "../types/route.type";
 import {RequestType} from "../types/request.type";
 
 export class CreateCategoriesIncome {
-    readonly titleCategoryInputElement: HTMLElement | null;
+    readonly titleCategoryInputElement: HTMLInputElement | null;
     public openNewRoute: RouteType[];
 
     constructor(openNewRoute: RouteType[]) {
-        this.titleCategoryInputElement = document.getElementById('titleCategoryInput');
+        this.titleCategoryInputElement = document.getElementById('titleCategoryInput') as HTMLInputElement;
         this.openNewRoute = openNewRoute;
         const saveButtonElement: HTMLElement | null = document.getElementById('saveButton');
 
@@ -17,13 +17,16 @@ export class CreateCategoriesIncome {
         saveButtonElement.addEventListener('click', this.saveCategory.bind(this));
     }
 
-   private validateForm(): boolean {
+   private validateForm(): boolean | undefined {
         let isValid: boolean = true;
 
         if (!this.titleCategoryInputElement) {
             return
         }
-        let textInputArray: HTMLElement[] | null[] = [this.titleCategoryInputElement];
+        let textInputArray: HTMLInputElement[] | null  = [this.titleCategoryInputElement];
+if (!textInputArray) {
+    return
+}
 
         for (let i: number = 0; i < textInputArray.length; i++) {
 
@@ -38,11 +41,15 @@ export class CreateCategoriesIncome {
         return isValid;
     }
 
-   private async saveCategory(e): Promise<any> {
+   private async saveCategory(e:any): Promise<any> {
         e.preventDefault();
 
         if (this.validateForm()) {
-            const createData: { title: any[] } = {
+            if (!this.titleCategoryInputElement) {
+                return
+            }
+            const createData: { title: string } = {
+                
                 title: this.titleCategoryInputElement.value,
             };
 

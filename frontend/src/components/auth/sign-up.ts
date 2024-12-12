@@ -3,10 +3,10 @@ import {HttpUtils} from "../../utils/http-utils";
 import {RouteType} from "../../types/route.type";
 
 export class SignUp {
-    readonly fullNameElement!: HTMLElement | null;
-    readonly emailElement!: HTMLElement | null;
-    readonly passwordElement!: HTMLElement | null;
-    readonly passwordRepeatElement!: HTMLElement | null;
+    readonly fullNameElement!: HTMLInputElement | null;
+    readonly emailElement!: HTMLInputElement | null;
+    readonly passwordElement!: HTMLInputElement | null;
+    readonly passwordRepeatElement!: HTMLInputElement | null;
     readonly commonErrorElement!: HTMLElement | null;
     readonly processButtonElement!: HTMLElement | null;
     public openNewRoute: RouteType[];
@@ -19,10 +19,10 @@ export class SignUp {
             return;
         }
         this.processButtonElement = document.getElementById('process-button');
-        this.fullNameElement = document.getElementById('full-name');
-        this.emailElement = document.getElementById('email');
-        this.passwordElement = document.getElementById('password');
-        this.passwordRepeatElement = document.getElementById('password-repeat');
+        this.fullNameElement = document.getElementById('full-name') as HTMLInputElement;
+        this.emailElement = document.getElementById('email') as HTMLInputElement;
+        this.passwordElement = document.getElementById('password') as HTMLInputElement;
+        this.passwordRepeatElement = document.getElementById('password-repeat') as HTMLInputElement;
         this.commonErrorElement = document.getElementById('common-error');
 
         if (!this.processButtonElement) {
@@ -31,12 +31,12 @@ export class SignUp {
         this.processButtonElement.addEventListener('click', this.signUp.bind(this));
     }
 
-   public validateForm(): boolean {
+   public validateForm(): boolean | string{
         let isValid: boolean = true;
         if (!this.fullNameElement || !this.emailElement ||
             !this.passwordElement || !this.passwordRepeatElement) {
-                window.location.href = '/login';
-            return;
+               return window.location.href = '/login';
+            
         }
 
         if (this.fullNameElement.value && this.fullNameElement.value.match(/^[А-ЯЁ][а-яё]* [А-ЯЁ][а-яё]*$/)) {
@@ -77,7 +77,7 @@ export class SignUp {
         }
         this.commonErrorElement.style.display = 'none';
 
-        if (this.validateForm()) {
+        if (this.validateForm() && this.fullNameElement && this.emailElement && this.passwordElement && this.passwordRepeatElement) {
             const result = await HttpUtils.request('/signup', 'POST', false, {
                 name: this.fullNameElement.value.split(' ').slice(0, 1).join(' '),
                 lastName: this.fullNameElement.value.split(' ').slice(1).join(' '),

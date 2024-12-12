@@ -5,13 +5,13 @@ import {RouteType} from "../types/route.type";
 import {RequestType} from "../types/request.type";
 
 export class Operations {
-    readonly recordsElement: HTMLElement | null;
-    readonly periodTodayElement: HTMLElement | null;
-    readonly periodWeekElement: HTMLElement | null;
-    readonly periodMonthElement: HTMLElement | null;
-    readonly periodYearElement: HTMLElement | null;
-    readonly periodAllElement: HTMLElement | null;
-    readonly periodIntervalElement: HTMLElement | null;
+    readonly recordsElement!: HTMLElement | null;
+    readonly periodTodayElement!: HTMLInputElement | null;
+    readonly periodWeekElement!: HTMLInputElement | null;
+    readonly periodMonthElement!: HTMLInputElement | null;
+    readonly periodYearElement!: HTMLInputElement | null;
+    readonly periodAllElement!: HTMLInputElement | null;
+    readonly periodIntervalElement!: HTMLInputElement | null;
 
     public openNewRoute: RouteType[];
     public ourOperations: any;
@@ -26,12 +26,12 @@ export class Operations {
         }
 
         this.recordsElement = document.getElementById('records');
-        this.periodTodayElement = document.getElementById('today');
-        this.periodWeekElement = document.getElementById('week');
-        this.periodMonthElement = document.getElementById('month');
-        this.periodYearElement = document.getElementById('year');
-        this.periodAllElement = document.getElementById('all');
-        this.periodIntervalElement = document.getElementById('interval');
+        this.periodTodayElement = document.getElementById('today') as HTMLInputElement;
+        this.periodWeekElement = document.getElementById('week') as HTMLInputElement;
+        this.periodMonthElement = document.getElementById('month') as HTMLInputElement;
+        this.periodYearElement = document.getElementById('year') as HTMLInputElement;
+        this.periodAllElement = document.getElementById('all') as HTMLInputElement;
+        this.periodIntervalElement = document.getElementById('interval') as HTMLInputElement;
         if (!this.periodTodayElement || !this.periodWeekElement || !this.periodMonthElement ||
             !this.periodYearElement || !this.periodAllElement || !this.periodIntervalElement) {
             return
@@ -87,14 +87,14 @@ export class Operations {
    public getPeriodInterval(): void {
         this.removeActiveClass();
 
-        const dateFromElement: HTMLElement | null | any = document.getElementById('dateFrom');
-        const dateToElement: HTMLElement | null | any = document.getElementById('dateTo');
+        const dateFromElement: HTMLInputElement | null | any = document.getElementById('dateFrom') as HTMLInputElement;
+        const dateToElement: HTMLInputElement | null | any = document.getElementById('dateTo') as HTMLInputElement;
        if (!dateFromElement && typeof dateFromElement === 'object' || !dateToElement && typeof dateToElement === 'object') {
            window.location.href = '/';
            return
        }
-
-        const getDatesArray = (dateFromElement, dateToElement) => {
+/*
+        const getDatesArray: Date | null = (dateFromElement: { value: string | number | Date; setDate: (arg0: any) => void; getDate: () => number; }, dateToElement: { value: number; }) => {
             const arr = [];
             while (dateFromElement.value <= dateToElement.value) {
                 arr.push(new Date(dateFromElement.value));
@@ -102,13 +102,13 @@ export class Operations {
             }
             return arr;
         };
-
+*/
         const params: string = `interval&dateFrom=${dateFromElement.value}&dateTo=${dateToElement.value}`;
 
         this.getOperations(params).then();
     }
 
-   private async getOperations(params): Promise<any> {
+   private async getOperations(params: string | undefined): Promise<any> {
         if (!params) {
             let today: string = dateFormat(new Date(), 'isoDate');
             params = `interval&dateFrom=${today}&dateTo=${today}`;
@@ -124,7 +124,6 @@ export class Operations {
             return alert('Возникла ошибка при запросе категории. Обратитесь в поддержку');
         }
         this.ourOperations = result.response;
-
         await this.showRecord(this.ourOperations);
 
         return this.ourOperations;
@@ -136,13 +135,13 @@ export class Operations {
         }
         this.recordsElement.innerHTML = '';
         if (this.ourOperations.length > 0) {
-            for (let i: number = 0; i < this.ourOperations.length; i++) {
+            for (let i: number | null = 0; i < this.ourOperations.length; i++) {
                 this.ourOperations.category_id = this.ourOperations[i].id;
                 this.ourOperations.type = this.ourOperations[i].type;
                 this.ourOperations.amount = this.ourOperations[i].amount;
                 this.ourOperations.category = this.ourOperations[i].category;
                 this.ourOperations.date = this.ourOperations[i].date;
-                const trElement: HTMLElement | null = document.createElement('tr');
+                const trElement: HTMLTableRowElement | null = document.createElement('tr');
                 if (!trElement) {
                     return
                 }
@@ -181,20 +180,28 @@ export class Operations {
         return this.ourOperations;
     }
 
-   private openPopup(id): void {
+   private openPopup(id:any): void {
         const popupElement: HTMLElement | null = document.getElementById('popup-container');
         if (!popupElement) {
             return
         }
         popupElement.classList.remove('d-none');
-        document.getElementById('delete-link').addEventListener('click', async () => {
+        const deleteLinkElement: HTMLElement | null = document.getElementById('delete-link');
+        if (!deleteLinkElement) {
+            return
+        }
+        deleteLinkElement.addEventListener('click', async () => {
             await this.deleteOperation(id)
             popupElement.classList.add('d-none');
         });
-        document.getElementById('canceled').addEventListener('click', this.showRecords.bind(this));
+        const canceledElement: HTMLElement | null = document.getElementById('canceled');
+        if (!canceledElement) {
+            return
+        }
+        canceledElement.addEventListener('click', this.showRecords.bind(this));
     }
 
-   private async deleteOperation(id): Promise<any> {
+   private async deleteOperation(id:any): Promise<any> {
         const result:RequestType = await HttpUtils.request('/operations/' + id, 'DELETE', true);
         if (result.redirect) {
             return this.openNewRoute(result.redirect);
@@ -205,7 +212,7 @@ export class Operations {
         return this.openNewRoute('/operations');
     }
 
-   private showRecords(): string {
+   private showRecords(): string | undefined {
         const popupElement: HTMLElement | null = document.getElementById('popup-container');
        if (!popupElement) {
            return

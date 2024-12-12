@@ -1,15 +1,18 @@
 import {HttpUtils} from "../utils/http-utils";
 import {RouteType} from "../types/route.type";
 import {RequestType} from "../types/request.type";
+import {OperationOriginalDataType} from "../types/operation-original-data.type";
 
 export class CreateCategoriesIncomeExpenses {
-    readonly categoryTypeElement: HTMLElement | null;
-    readonly categorySelectElement: HTMLElement | null;
-    readonly amountInputElement: HTMLElement | null;
-    readonly dateInputElement: HTMLElement | null;
-    readonly commentInputElement: HTMLElement | null;
+    readonly categoryTypeElement: HTMLInputElement | null;
+    readonly categorySelectElement: HTMLInputElement | null;
+    readonly amountInputElement: HTMLInputElement | null;
+    readonly dateInputElement: HTMLInputElement | null;
+    readonly commentInputElement: HTMLInputElement | null;
     readonly saveIncomeButtonElement: HTMLElement | null;
-    public operationOriginalData: any[] | null;
+    public operationOriginalData: OperationOriginalDataType | null;
+   
+
 
     public openNewRoute: RouteType[];
 
@@ -17,12 +20,12 @@ export class CreateCategoriesIncomeExpenses {
         this.operationOriginalData = null;
         this.openNewRoute = openNewRoute;
 
-        this.categoryTypeElement = document.getElementById('typeInput');
-        this.categorySelectElement = document.getElementById('categoryInput');
-        this.amountInputElement = document.getElementById('amountInput');
-        this.dateInputElement = document.getElementById('dateInput');
-        this.commentInputElement = document.getElementById('commentInput');
-        this.saveIncomeButtonElement = document.getElementById('saveIncomeButton');
+        this.categoryTypeElement = document.getElementById('typeInput') as HTMLInputElement;
+        this.categorySelectElement = document.getElementById('categoryInput') as HTMLInputElement;
+        this.amountInputElement = document.getElementById('amountInput') as HTMLInputElement;
+        this.dateInputElement = document.getElementById('dateInput') as HTMLInputElement;
+        this.commentInputElement = document.getElementById('commentInput') as HTMLInputElement;
+        this.saveIncomeButtonElement = document.getElementById('saveIncomeButton') as HTMLInputElement;
         if (!this.saveIncomeButtonElement) {
             return;
         }
@@ -33,7 +36,7 @@ export class CreateCategoriesIncomeExpenses {
 
     private async chosenOperation(): Promise<any> {
         let that: this = this;
-        const categoryTypeElement: HTMLElement | null = document.getElementById('typeInput');
+        const categoryTypeElement: HTMLInputElement | null = document.getElementById('typeInput') as HTMLInputElement;
 
         if (!categoryTypeElement) {
             return
@@ -50,19 +53,19 @@ export class CreateCategoriesIncomeExpenses {
                 }
                 that.operationOriginalData = result.response;
             }
-            await that.showOperation(that.operationOriginalData);
+            that.showOperation(that.operationOriginalData);
             return that.operationOriginalData;
         }
         return this.operationOriginalData;
     }
 
-    public validateForm(): boolean {
+    public validateForm(): boolean | undefined {
         let isValid: boolean = true;
         if (!this.categoryTypeElement || !this.categorySelectElement || !this.amountInputElement ||
             !this.dateInputElement || !this.commentInputElement) {
-            return
+            return;
         }
-        let textInputArray: HTMLElement[] | null = [this.categoryTypeElement, this.categorySelectElement,
+        let textInputArray: HTMLInputElement[] | null = [this.categoryTypeElement, this.categorySelectElement,
             this.amountInputElement, this.dateInputElement, this.commentInputElement];
 
         for (let i: number = 0; i < textInputArray.length; i++) {
@@ -79,7 +82,7 @@ export class CreateCategoriesIncomeExpenses {
 
     private showOperation(): void {
 
-        const categorySelectElement: HTMLElement | null = document.getElementById('categoryInput');
+        const categorySelectElement: HTMLInputElement | null = document.getElementById('categoryInput') as HTMLInputElement;
         if (!categorySelectElement) {
             return
         }
@@ -89,10 +92,14 @@ export class CreateCategoriesIncomeExpenses {
         categoryOptionBaseElement.style.color = 'text-secondary';
         categoryOptionBaseElement.setAttribute('selected', 'selected');
         categorySelectElement.appendChild(categoryOptionBaseElement);
-        if (!this.operationOriginalData) {
+        if (!this.operationOriginalData || typeof this.operationOriginalData !== 'object') {
             return
         }
         for (let i: number = 0; i < this.operationOriginalData.length; i++) {
+            if (!this.operationOriginalData[i].id || !this.categoryTypeElement 
+                ||!this.operationOriginalData[i].title || !this.amountInputElement || !this.dateInputElement || !this.commentInputElement) {
+                    return
+                }
             this.operationOriginalData.id = this.operationOriginalData[i].id;
             this.operationOriginalData.type = this.categoryTypeElement.value;
             this.operationOriginalData.category = this.operationOriginalData[i].title;
@@ -100,7 +107,10 @@ export class CreateCategoriesIncomeExpenses {
             this.operationOriginalData.date = this.dateInputElement.value;
             this.operationOriginalData.comment = this.commentInputElement.value;
 
-            const categoryOptionElement: HTMLOptionElement = document.createElement('option');
+            const categoryOptionElement: HTMLOptionElement | null = document.createElement('option');
+            if (!categoryOptionElement || !this.operationOriginalData) {
+                return
+            }
             categoryOptionElement.value = this.operationOriginalData[i].id;
             categoryOptionElement.innerText = this.operationOriginalData[i].title;
 
@@ -108,9 +118,13 @@ export class CreateCategoriesIncomeExpenses {
         }
     }
 
-    private async saveOperation(e): Promise<any> {
+    private async saveOperation(e:any): Promise<any> {
         e.preventDefault();
         let createData: any = {};
+        if (!this.categoryTypeElement || !this.categorySelectElement
+            || !this.amountInputElement || !this.dateInputElement || !this.commentInputElement) {
+            return
+        }
         if (this.validateForm()) {
             createData = {
                 type: this.categoryTypeElement.value,
