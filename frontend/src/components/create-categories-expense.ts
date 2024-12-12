@@ -49,7 +49,11 @@ if (!this.titleCategoryInputElement) {
                 title: this.titleCategoryInputElement.value,
             };
 
-            const result: RequestType[] = await HttpUtils.request('/categories/expense', 'POST', true, createData);
+            const result: RequestType | null = await HttpUtils.request('/categories/expense', 'POST', true, createData);
+            if (!result) {
+                return
+            }
+
             if (result.redirect) {
                 return this.openNewRoute(result.redirect);
             }

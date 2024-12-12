@@ -93,7 +93,7 @@ export class EditCategoriesIncomeExpenses {
         return this.operationOriginalData;
     }
 
-    private async chosenOperation(data): Promise<any> {
+    private async chosenOperation(data: any): Promise<any> {
         let operations: any;
         if (data.type === 'income' || data.type === 'expense') {
             let result: RequestType =

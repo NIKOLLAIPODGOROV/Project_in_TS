@@ -24,7 +24,7 @@ export class EditCategoriesExpense {
     }
 
    private async getCategory(): Promise<any> {
-        const id: string = UrlUtils.getUrlParam('id');
+        const id: string | null = UrlUtils.getUrlParam('id');
         const result: RequestType = await HttpUtils.request('/categories/expense/' + id);
         if (result.redirect) {
             return this.openNewRoute(result.redirect);
@@ -64,7 +64,7 @@ export class EditCategoriesExpense {
         e.preventDefault();
         const id: string | null = UrlUtils.getUrlParam('id');
         if (this.validateForm()) {
-            let changedData: { title: any[] | null } = {title: null,};
+            let changedData: {title: string | null, id: string | null } = {title: null,id: null};
 
             if (!changedData) {
                 return

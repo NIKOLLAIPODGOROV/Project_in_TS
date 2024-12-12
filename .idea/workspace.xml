@@ -5,20 +5,15 @@
   </component>
   <component name="ChangeListManager">
     <list default="true" id="5833d54a-adaf-4b38-a1dd-8323fdd44132" name="Changes" comment="">
-      <change afterPath="$PROJECT_DIR$/frontend/src/types/operation-original-data.type.ts" afterDir="false" />
-      <change beforePath="$PROJECT_DIR$/.gitignore" beforeDir="false" afterPath="$PROJECT_DIR$/.gitignore" afterDir="false" />
       <change beforePath="$PROJECT_DIR$/.idea/workspace.xml" beforeDir="false" afterPath="$PROJECT_DIR$/.idea/workspace.xml" afterDir="false" />
-      <change beforePath="$PROJECT_DIR$/frontend/src/components/auth/login.ts" beforeDir="false" afterPath="$PROJECT_DIR$/frontend/src/components/auth/login.ts" afterDir="false" />
-      <change beforePath="$PROJECT_DIR$/frontend/src/components/auth/sign-up.ts" beforeDir="false" afterPath="$PROJECT_DIR$/frontend/src/components/auth/sign-up.ts" afterDir="false" />
       <change beforePath="$PROJECT_DIR$/frontend/src/components/create-categories-expense.ts" beforeDir="false" afterPath="$PROJECT_DIR$/frontend/src/components/create-categories-expense.ts" afterDir="false" />
-      <change beforePath="$PROJECT_DIR$/frontend/src/components/create-categories-income-expenses.ts" beforeDir="false" afterPath="$PROJECT_DIR$/frontend/src/components/create-categories-income-expenses.ts" afterDir="false" />
       <change beforePath="$PROJECT_DIR$/frontend/src/components/create-categories-income.ts" beforeDir="false" afterPath="$PROJECT_DIR$/frontend/src/components/create-categories-income.ts" afterDir="false" />
       <change beforePath="$PROJECT_DIR$/frontend/src/components/edit-categories-expense.ts" beforeDir="false" afterPath="$PROJECT_DIR$/frontend/src/components/edit-categories-expense.ts" afterDir="false" />
       <change beforePath="$PROJECT_DIR$/frontend/src/components/edit-categories-income-expenses.ts" beforeDir="false" afterPath="$PROJECT_DIR$/frontend/src/components/edit-categories-income-expenses.ts" afterDir="false" />
       <change beforePath="$PROJECT_DIR$/frontend/src/components/edit-categories-income.ts" beforeDir="false" afterPath="$PROJECT_DIR$/frontend/src/components/edit-categories-income.ts" afterDir="false" />
-      <change beforePath="$PROJECT_DIR$/frontend/src/components/index.ts" beforeDir="false" afterPath="$PROJECT_DIR$/frontend/src/components/index.ts" afterDir="false" />
       <change beforePath="$PROJECT_DIR$/frontend/src/components/operations.ts" beforeDir="false" afterPath="$PROJECT_DIR$/frontend/src/components/operations.ts" afterDir="false" />
-      <change beforePath="$PROJECT_DIR$/frontend/src/types/user-info.type.ts" beforeDir="false" afterPath="$PROJECT_DIR$/frontend/src/types/user-info.type.ts" afterDir="false" />
+      <change beforePath="$PROJECT_DIR$/frontend/src/types/operation-original-data.type.ts" beforeDir="false" afterPath="$PROJECT_DIR$/frontend/src/types/operation-original-data.type.ts" afterDir="false" />
+      <change beforePath="$PROJECT_DIR$/frontend/src/types/route.type.ts" beforeDir="false" afterPath="$PROJECT_DIR$/frontend/src/types/route.type.ts" afterDir="false" />
     </list>
     <option name="SHOW_DIALOG" value="false" />
     <option name="HIGHLIGHT_CONFLICTS" value="true" />
@@ -116,6 +111,8 @@
       <workItem from="1733948922894" duration="4836000" />
       <workItem from="1733995857069" duration="599000" />
       <workItem from="1733997101441" duration="2593000" />
+      <workItem from="1733999937177" duration="723000" />
+      <workItem from="1734016061544" duration="532000" />
     </task>
     <servers />
   </component>

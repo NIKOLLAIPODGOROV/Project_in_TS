@@ -25,7 +25,7 @@ export class Operations {
             return
         }
 
-        this.recordsElement = document.getElementById('records');
+        this.recordsElement = document.getElementById('records') as HTMLElement;
         this.periodTodayElement = document.getElementById('today') as HTMLInputElement;
         this.periodWeekElement = document.getElementById('week') as HTMLInputElement;
         this.periodMonthElement = document.getElementById('month') as HTMLInputElement;
@@ -108,13 +108,16 @@ export class Operations {
         this.getOperations(params).then();
     }
 
-   private async getOperations(params: string | undefined): Promise<any> {
+   private async getOperations(params: string | null): Promise<any> {
         if (!params) {
-            let today: string = dateFormat(new Date(), 'isoDate');
+            let today: string | null = dateFormat(new Date(), 'isoDate');
             params = `interval&dateFrom=${today}&dateTo=${today}`;
         }
 
-        let result: RequestType[] | any = await HttpUtils.request('/operations?period=' + params);
+        let result: Request | null = await HttpUtils.request('/operations?period=' + params);
+        if (!result) {
+            return
+        }
 
         if (result.redirect) {
             return this.openNewRoute(result.redirect);
@@ -141,7 +144,7 @@ export class Operations {
                 this.ourOperations.amount = this.ourOperations[i].amount;
                 this.ourOperations.category = this.ourOperations[i].category;
                 this.ourOperations.date = this.ourOperations[i].date;
-                const trElement: HTMLTableRowElement | null = document.createElement('tr');
+                const trElement: HTMLTableRowElement | null | any = document.createElement('tr');
                 if (!trElement) {
                     return
                 }

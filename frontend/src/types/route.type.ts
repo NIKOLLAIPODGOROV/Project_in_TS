@@ -1,4 +1,5 @@
 export type RouteType = {
+        url?: string,
         route: string
         title?: string
         filePathTemplate?: string

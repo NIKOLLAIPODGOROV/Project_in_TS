@@ -65,7 +65,7 @@ export class EditCategoriesIncome {
         e.preventDefault();
         const id: string | null = UrlUtils.getUrlParam('id');
         if (this.validateForm()) {
-            let changedData: {title:any[] | null}  = {title: null,};
+            let changedData: {title: string | null, id: string | null } = {title: null,id: null};
 
             if (!changedData) {
                 return
