@@ -1,20 +1,20 @@
 import {HttpUtils} from "../../utils/http-utils";
 import {AuthUtils} from "../../utils/auth-utils";
-import {RouteType} from "../../types/route.type";
 import {RequestType} from "../../types/request.type";
+import {ResultResponseType} from "../../types/result-response.type";
 
 export class CategoriesExpense {
     readonly contentDescriptionElement!: HTMLElement | null;
     public categoryOriginalData: any[] | any;
-    public openNewRoute: RouteType[];
+    public openNewRoute: (url: string) => Promise<void>;
 
-    constructor(openNewRoute: RouteType[]) {
+    constructor(openNewRoute: (url: string) => Promise<void>) {
         this.categoryOriginalData = [];
         this.openNewRoute = openNewRoute;
         let token: string | null | { [p: string]: string | null } = AuthUtils.getAuthInfo('accessToken');
         if (!token) {
             window.location.href = '/';
-            return
+            return;
         }
         this.getCategory().then();
         this.contentDescriptionElement = document.getElementById('content-description');
@@ -83,7 +83,7 @@ export class CategoriesExpense {
             cardBodyCategoryElement.appendChild(contentButtonsElement);
             cardBodyCategoryElement.appendChild(updateButtonElement);
             cardBodyCategoryElement.appendChild(deleteButtonElement);
-            deleteButtonElement.addEventListener('click', () => {
+            deleteButtonElement.addEventListener('click', (): void => {
                 this.openPopup(this.categoryOriginalData[i].id);
             });
         }
@@ -105,7 +105,6 @@ export class CategoriesExpense {
             this.deleteCategory(id).then();
             popupElement.classList.add('d-none');
         });
-
         const canceledElement: HTMLElement | null = document.getElementById('canceled');
         if (!canceledElement) {
             return
@@ -115,19 +114,17 @@ export class CategoriesExpense {
     }
 
     private async deleteCategory(id: any): Promise<any> {
-        const result: RequestType = await HttpUtils.request('/categories/expense/' + id, 'DELETE', true);
+        const result: ResultResponseType = await HttpUtils.request('/categories/expense/' + id, 'DELETE', true);
         if (result.redirect) {
             return this.openNewRoute(result.redirect);
         }
         if (!result.response) {
             return alert('Возникла ошибка при удалении категории. Обратитесь в поддержку');
         }
-        window.location.href = '/expense';
-        return;
-        //  return this.openNewRoute('/expense');
+       return window.location.href = '/expense';
     }
 
-    showCategories(): void {
+   private showCategories(): void {
         const popupElement: HTMLElement | null = document.getElementById('popup-container');
         if (!popupElement) {
             window.location.href = '/expense';

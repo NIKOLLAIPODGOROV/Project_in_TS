@@ -1,6 +1,6 @@
 import {AuthUtils} from "../../utils/auth-utils";
 import {HttpUtils} from "../../utils/http-utils";
-import {RouteType} from "../../types/route.type";
+import {ResultResponseType} from "../../types/result-response.type";
 
 export class SignUp {
     readonly fullNameElement!: HTMLInputElement | null;
@@ -9,9 +9,9 @@ export class SignUp {
     readonly passwordRepeatElement!: HTMLInputElement | null;
     readonly commonErrorElement!: HTMLElement | null;
     readonly processButtonElement!: HTMLElement | null;
-    public openNewRoute: RouteType[];
+    public openNewRoute: (url: string) => Promise<void>;
 
-    constructor(openNewRoute: RouteType[]) {
+    constructor(openNewRoute: OmitThisParameter<(url: string) => Promise<void>>) {
         this.openNewRoute = openNewRoute;
 
         if (AuthUtils.getAuthInfo('accessToken')) {
@@ -78,7 +78,7 @@ export class SignUp {
         this.commonErrorElement.style.display = 'none';
 
         if (this.validateForm() && this.fullNameElement && this.emailElement && this.passwordElement && this.passwordRepeatElement) {
-            const result = await HttpUtils.request('/signup', 'POST', false, {
+            const result: ResultResponseType = await HttpUtils.request('/signup', 'POST', false, {
                 name: this.fullNameElement.value.split(' ').slice(0, 1).join(' '),
                 lastName: this.fullNameElement.value.split(' ').slice(1).join(' '),
                 email: this.emailElement.value,

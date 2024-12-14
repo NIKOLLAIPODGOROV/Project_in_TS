@@ -1,11 +1,10 @@
 import {AuthUtils} from "../../utils/auth-utils";
 import {HttpUtils} from "../../utils/http-utils";
-import {RouteType} from "../../types/route.type";
 
 export class Logout {
-    public openNewRoute: RouteType[];
+    public openNewRoute: (url: string) => Promise<void>;
 
-    constructor(openNewRoute: RouteType[]) {
+    constructor(openNewRoute: OmitThisParameter<(url: string) => Promise<void>>) {
         this.openNewRoute = openNewRoute;
 
         if (!AuthUtils.getAuthInfo(AuthUtils.accessTokenKey) || !AuthUtils.getAuthInfo(AuthUtils.refreshTokenKey)) {
@@ -15,10 +14,10 @@ export class Logout {
             }
         }
 
-        this.logout(openNewRoute).then();
+        this.logout(this.openNewRoute).then();
     }
 
-    private async logout(openNewRoute: RouteType[]): Promise<void> {
+    private async logout(openNewRoute: OmitThisParameter<(url: string) => Promise<void>>): Promise<void> {
         this.openNewRoute = openNewRoute;
 
         await HttpUtils.request('/logout', 'POST', false, {

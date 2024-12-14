@@ -1,16 +1,15 @@
 import {HttpUtils} from "../utils/http-utils";
 import {UrlUtils} from "../utils/url-utils";
-import {RouteType} from "../types/route.type";
-import {RequestType} from "../types/request.type";
 import {OperationOriginalDataType} from "../types/operation-original-data.type";
+import {ResultResponseType} from "../types/result-response.type";
 
 export class EditCategoriesIncome {
     readonly titleCategoryInputElement: HTMLInputElement | null;
     readonly updateButtonElement: HTMLElement | null;
     public categoryOriginalData: OperationOriginalDataType | any;
-    public openNewRoute: RouteType[];
+    public openNewRoute: (url: string) => Promise<void>;
 
-    constructor(openNewRoute: RouteType[]) {
+    constructor(openNewRoute: (url: string) => Promise<void>)  {
         this.categoryOriginalData = [];
         this.openNewRoute = openNewRoute;
 
@@ -26,7 +25,7 @@ export class EditCategoriesIncome {
 
    private async getCategory(): Promise<any> {
         const id: string | null = UrlUtils.getUrlParam('id');
-        const result: RequestType =  await HttpUtils.request('/categories/income/' + id );
+        const result: ResultResponseType =  await HttpUtils.request('/categories/income/' + id );
         if (result.redirect) {
             return this.openNewRoute(result.redirect);
         }
@@ -79,7 +78,7 @@ export class EditCategoriesIncome {
                     changedData.id = this.categoryOriginalData.id;
                 }
 
-                let result: RequestType = await HttpUtils.request('/categories/income/' + id, 'PUT', true, changedData);
+                let result: ResultResponseType = await HttpUtils.request('/categories/income/' + id, 'PUT', true, changedData);
                 if (result.redirect) {
                     return this.openNewRoute(result.redirect);
                 }

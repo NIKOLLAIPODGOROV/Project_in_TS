@@ -1,11 +1,11 @@
 export type OperationOriginalDataType = {
-    length?: string,
-      id: string,
-    type: string,
-    category: string,
-    amount: string | number,
+    length?: number,
+      id: string | null,
+    type: string | null,
+    category: string | null,
+    amount: number | string,
     date: string,
-    comment: string,
-    title?: string,
+    comment: string | null,
+    title?: string | null,
 }
 

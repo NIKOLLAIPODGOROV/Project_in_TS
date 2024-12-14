@@ -1,12 +1,11 @@
 import {AuthUtils} from "../utils/auth-utils";
 import {HttpUtils} from "../utils/http-utils";
-import {RouteType} from "../types/route.type";
 import {RequestType} from "../types/request.type";
 
 export class Balance {
-    public openNewRoute: RouteType[];
+    public openNewRoute: (url: string) => Promise<void>;
 
-    constructor(openNewRoute: RouteType[]) {
+    constructor(openNewRoute: (url: string) => Promise<void>) {
         const balanceElement: HTMLElement | null = document.getElementById('balance');
         this.openNewRoute = openNewRoute;
         let token: string | null | { [p: string]: string | null } = AuthUtils.getAuthInfo('accessToken');

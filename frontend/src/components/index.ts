@@ -1,9 +1,8 @@
 import {AuthUtils} from "../utils/auth-utils";
 import {HttpUtils} from "../utils/http-utils";
-import dateFormat from "dateFormat";
+import dateFormat from "dateformat";
 import {OurChartsUtils} from "../utils/our-charts-utils";
 import {RequestType} from "../types/request.type";
-import {RouteType} from "../types/route.type";
 
 export class Index {
     public showIncomeChartElement: HTMLElement | null;
@@ -15,13 +14,13 @@ export class Index {
     readonly periodAllElement!: HTMLInputElement | null;
     readonly periodIntervalElement!: HTMLInputElement | null;
 
-    public openNewRoute: RouteType[];
+    public openNewRoute: (url: string) => Promise<void>;
     public ourOperations: any;
     public OurChartsUtils: any;
     public chartExpenses: any;
     public chartIncome: any;
 
-    constructor(openNewRoute: RouteType[]) {
+    constructor(openNewRoute: (url: string) => Promise<void>) {
         this.openNewRoute = openNewRoute;
         this.ourOperations = null;
         this.OurChartsUtils = OurChartsUtils;
@@ -33,8 +32,8 @@ export class Index {
         let token: string | { [p: string]: string | null } | null = AuthUtils.getAuthInfo('accessToken');
 
         if (!token) {
-            window.location.href = '/login';
-            return
+           window.location.href = '/login';
+           
             // return this.openNewRoute('/login');
         }
 
@@ -116,7 +115,7 @@ export class Index {
         this.getOperations(params).then();
     }
 
-    private async getOperations(params: string): Promise<any> {
+    private async getOperations(params?: string): Promise<any> {
         if (!params) {
             let today: string = dateFormat(new Date(), 'isoDate');
 

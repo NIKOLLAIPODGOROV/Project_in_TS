@@ -26,6 +26,7 @@ export class Router {
     private routes: RouteType[];
 
     constructor() {
+
         this.titlePageElement = document.getElementById('title');
         this.contentPageElement = document.getElementById('content');
         this.layoutPageElement = document.getElementById('sidebar');

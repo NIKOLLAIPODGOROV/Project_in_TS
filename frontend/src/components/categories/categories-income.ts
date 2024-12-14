@@ -1,18 +1,19 @@
 import {HttpUtils} from "../../utils/http-utils";
 import {AuthUtils} from "../../utils/auth-utils";
-import {RouteType} from "../../types/route.type";
 import {RequestType} from "../../types/request.type";
+import {ResultResponseType} from "../../types/result-response.type";
 
 export class CategoriesIncome {
-    private contentDescriptionElement!: HTMLElement | null;
+    readonly contentDescriptionElement!: HTMLElement | null;
     public categoryOriginalData: any[] | any;
-    public openNewRoute: RouteType[];
+    public openNewRoute: (url: string) => Promise<void>;
 
-    constructor(openNewRoute: RouteType[]) {
+    constructor(openNewRoute: (url: string) => Promise<void>) {
         this.categoryOriginalData = [];
         this.openNewRoute = openNewRoute;
         let token: string | null | { [p: string]: string | null } = AuthUtils.getAuthInfo('accessToken');
         if (!token) {
+            window.location.href = '/';
             return;
         }
         this.getCategory().then();
@@ -70,6 +71,7 @@ export class CategoriesIncome {
             cardSecondRowElement.classList.add('d-flex', 'flex-row', 'gap-3', 'mt-3');
 
             if (!this.contentDescriptionElement) {
+                window.location.href = '/';
                 return
             }
 
@@ -80,7 +82,7 @@ export class CategoriesIncome {
             cardBodyCategoryElement.appendChild(contentButtonsElement);
             cardBodyCategoryElement.appendChild(updateButtonElement);
             cardBodyCategoryElement.appendChild(deleteButtonElement);
-            deleteButtonElement.addEventListener('click', () => {
+            deleteButtonElement.addEventListener('click', (): void => {
                 this.openPopup(this.categoryOriginalData[i].id);
             });
         }
@@ -89,6 +91,7 @@ export class CategoriesIncome {
    private openPopup(id: any): void {
         const popupElement: HTMLElement | null = document.getElementById('popup-container');
         if (!popupElement) {
+            window.location.href = '/';
             return
         }
         popupElement.classList.remove('d-none');
@@ -110,7 +113,7 @@ export class CategoriesIncome {
     }
 
     private async deleteCategory(id: any): Promise<any> {
-        const result: RequestType = await HttpUtils.request('/categories/income/' + id, 'DELETE', true);
+        const result: ResultResponseType = await HttpUtils.request('/categories/income/' + id, 'DELETE', true);
         if (result.redirect) {
             return this.openNewRoute(result.redirect);
         }
@@ -124,6 +127,7 @@ export class CategoriesIncome {
    private showCategories(): void {
         const popupElement: HTMLElement | null = document.getElementById('popup-container');
         if (!popupElement) {
+            window.location.href = '/expense';
             return
         }
         popupElement.classList.add('d-none');

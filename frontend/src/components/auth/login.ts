@@ -1,4 +1,3 @@
-
 import {AuthUtils} from "../../utils/auth-utils";
 import {HttpUtils} from "../../utils/http-utils";
 import {RouteType} from "../../types/route.type";
@@ -12,11 +11,11 @@ export class Login {
     readonly rememberMeElement: HTMLInputElement | null;
     readonly commonErrorElement: HTMLElement | null;
 
-    public openNewRoute:  RouteType[];
+    public openNewRoute: (url: string) => Promise<void>;
 
-    constructor(openNewRoute:RouteType[]) {
+    constructor(openNewRoute: (url: string) => Promise<void>) {
         this.openNewRoute = openNewRoute;
-const processButtonElement = document.getElementById('process-button');
+        const processButtonElement: HTMLElement | null = document.getElementById('process-button');
         this.emailElement = document.getElementById('email') as HTMLInputElement;
         this.passwordElement = document.getElementById('password') as HTMLInputElement;
         this.rememberMeElement = document.getElementById('remember-me') as HTMLInputElement;
@@ -30,12 +29,12 @@ const processButtonElement = document.getElementById('process-button');
 
     }
 
-   public validateForm(): boolean  | string{
+    public validateForm(): boolean | string {
         let isValid: boolean = true;
 
-        if (!this.emailElement || !this.passwordElement ) {
-           return window.location.href = '/';
-           // return ;
+        if (!this.emailElement || !this.passwordElement) {
+            return window.location.href = '/';
+            // return ;
         }
 
         if (this.emailElement.value && this.emailElement.value.match(/^\w+([-+.']\w+)*@\w+([-.]\w+)*\.\w+([-.]\w+)*$/)) {
@@ -54,18 +53,18 @@ const processButtonElement = document.getElementById('process-button');
         return isValid;
     }
 
-    async login():Promise<void> {
+    async login(): Promise<void> {
         if (!this.commonErrorElement) {
             return
         }
-       this.commonErrorElement .style.display = 'none';
+        this.commonErrorElement.style.display = 'none';
         if (this.validateForm()) {
 
             if (!this.emailElement || !this.passwordElement || !this.rememberMeElement) {
                 return
             }
 
-            const result: ResultResponseType = await HttpUtils.request('/login', 'POST', false,{
+            const result: ResultResponseType = await HttpUtils.request('/login', 'POST', false, {
 
                 email: this.emailElement.value,
                 password: this.passwordElement.value,
@@ -83,8 +82,7 @@ const processButtonElement = document.getElementById('process-button');
                 id: result.response.user.id,
             });
             window.location.href = '/';
-            return
-           // this.openNewRoute('/');
+            // this.openNewRoute('/');
         }
     }
 }

@@ -1,10 +1,5 @@
-/*
-export default {
-    host: 'http://localhost:3000/api',
-}
 
-*/
-const host = 'http://localhost:3000/api';
+const host: string = 'http://localhost:3000/api';
 const config = {
     host: host,
     api: host + '/api',

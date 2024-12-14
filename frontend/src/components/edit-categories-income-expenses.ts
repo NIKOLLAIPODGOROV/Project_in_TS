@@ -1,8 +1,7 @@
 import {HttpUtils} from "../utils/http-utils";
 import {UrlUtils} from "../utils/url-utils";
-import {RouteType} from "../types/route.type";
-import {RequestType} from "../types/request.type";
 import {OperationOriginalDataType} from "../types/operation-original-data.type";
+import {ResultResponseType} from "../types/result-response.type";
 
 export class EditCategoriesIncomeExpenses {
     readonly categoryTypeElement: HTMLInputElement | null;
@@ -13,11 +12,11 @@ export class EditCategoriesIncomeExpenses {
     readonly updateOperationElement: HTMLElement | null;
 
 
-    private operationOriginalData: OperationOriginalDataType | any;
-    public openNewRoute: RouteType[];
+    private operationOriginalData:  any | null;
+    public openNewRoute: (url: string) => Promise<void>;
 
 
-    constructor(openNewRoute: RouteType[]) {
+    constructor(openNewRoute: (url: string) => Promise<void>)  {
         this.operationOriginalData = null;
         this.openNewRoute = openNewRoute;
 
@@ -38,7 +37,7 @@ export class EditCategoriesIncomeExpenses {
     private async getOperation(): Promise<any> {
         const id: string | null = UrlUtils.getUrlParam('id');
 
-        const result: RequestType = await HttpUtils.request('/operations/' + id);
+        const result: ResultResponseType = await HttpUtils.request('/operations/' + id);
         console.log(result);
 
         if (result.redirect) {
@@ -80,7 +79,7 @@ export class EditCategoriesIncomeExpenses {
             return
         }
         if (this.amountInputElement.value !== this.operationOriginalData.amount) {
-            this.amountInputElement.value = +this.operationOriginalData.amount;
+            this.amountInputElement.value = String(+this.operationOriginalData.amount);
         }
         if (this.dateInputElement.value !== this.operationOriginalData.date) {
             this.dateInputElement.value = this.operationOriginalData.date;
@@ -96,7 +95,7 @@ export class EditCategoriesIncomeExpenses {
     private async chosenOperation(data: any): Promise<any> {
         let operations: any;
         if (data.type === 'income' || data.type === 'expense') {
-            let result: RequestType =
+            let result: ResultResponseType =
                 data.type === 'income'
                     ? await HttpUtils.request('/categories/income')
                     : await HttpUtils.request('/categories/expense');
@@ -197,7 +196,7 @@ export class EditCategoriesIncomeExpenses {
                     changedData.amount = +this.operationOriginalData.amount;
                 }
                 if (this.dateInputElement.value !== this.operationOriginalData.date) {
-                    changedData.date = this.dateInputElement.value.toLocaleString('ru-RU');
+                    changedData.date = this.dateInputElement.value.toLocaleString();
                 } else {
                     changedData.date = this.operationOriginalData.date;
                 }

@@ -1,16 +1,14 @@
 import {HttpUtils} from "../utils/http-utils";
-import {RouteType} from "../types/route.type";
-import {RequestType} from "../types/request.type";
+import {ResultResponseType} from "../types/result-response.type";
 
 export class CreateCategoriesExpense {
     readonly titleCategoryInputElement: HTMLInputElement | null;
-    public openNewRoute: RouteType[];
-
-    constructor(openNewRoute: RouteType[]) {
+    public openNewRoute: (url: string) => Promise<void>;
+    constructor(openNewRoute: (url: string) => Promise<void>) {
         this.titleCategoryInputElement = document.getElementById('titleCategoryInput') as HTMLInputElement;
         this.openNewRoute = openNewRoute;
         const saveButtonElement: HTMLElement | null = document.getElementById('saveButton');
-       
+
         if (!saveButtonElement) {
             return
         }
@@ -20,9 +18,9 @@ export class CreateCategoriesExpense {
     private validateForm(): boolean | undefined {
         let isValid: boolean = true;
 
-       if (!this.titleCategoryInputElement) {
-           return;
-       }
+        if (!this.titleCategoryInputElement) {
+            return;
+        }
         let textInputArray: HTMLInputElement[] | null[] = [this.titleCategoryInputElement];
 
         for (let i: number = 0; i < textInputArray.length; i++) {
@@ -40,16 +38,16 @@ export class CreateCategoriesExpense {
 
     private async saveCategory(e: any): Promise<any> {
         e.preventDefault();
-if (!this.titleCategoryInputElement) {
-    return
-}
+        if (!this.titleCategoryInputElement) {
+            return
+        }
 
         if (this.validateForm()) {
             const createData: { title: string } = {
                 title: this.titleCategoryInputElement.value,
             };
 
-            const result: RequestType | null = await HttpUtils.request('/categories/expense', 'POST', true, createData);
+            const result: ResultResponseType | null = await HttpUtils.request('/categories/expense', 'POST', true, createData);
             if (!result) {
                 return
             }

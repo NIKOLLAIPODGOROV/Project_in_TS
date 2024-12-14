@@ -3,6 +3,7 @@ export type ResultResponseType = {
     password: string,
     rememberMe?: boolean,
     response: any,
+    redirect: any,
     error?: string,
     message?: string
 }

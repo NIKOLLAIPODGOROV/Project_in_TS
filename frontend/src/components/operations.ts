@@ -1,8 +1,7 @@
 import {AuthUtils} from "../utils/auth-utils";
-import {HttpUtils} from "../utils/http-utils.js";
+import {HttpUtils} from "../utils/http-utils";
 import dateFormat from "dateformat";
-import {RouteType} from "../types/route.type";
-import {RequestType} from "../types/request.type";
+import {ResultResponseType} from "../types/result-response.type";
 
 export class Operations {
     readonly recordsElement!: HTMLElement | null;
@@ -12,17 +11,18 @@ export class Operations {
     readonly periodYearElement!: HTMLInputElement | null;
     readonly periodAllElement!: HTMLInputElement | null;
     readonly periodIntervalElement!: HTMLInputElement | null;
+    public openNewRoute: (url: string) => Promise<void>;
 
-    public openNewRoute: RouteType[];
     public ourOperations: any;
 
-    constructor(openNewRoute: RouteType[]) {
+    constructor(openNewRoute: (url: string) => Promise<void>) {
         this.openNewRoute = openNewRoute;
         this.ourOperations = null;
         let token: string | { [p: string]: string | null } | null = localStorage.getItem(AuthUtils.accessTokenKey);
         if (!token) {
-            window.location.href = '/login';
-            return
+           window.location.href = '/login';
+           
+
         }
 
         this.recordsElement = document.getElementById('records') as HTMLElement;
@@ -108,13 +108,13 @@ export class Operations {
         this.getOperations(params).then();
     }
 
-   private async getOperations(params: string | null): Promise<any> {
+   private async getOperations(params?: string | null): Promise<any> {
         if (!params) {
             let today: string | null = dateFormat(new Date(), 'isoDate');
             params = `interval&dateFrom=${today}&dateTo=${today}`;
         }
 
-        let result: Request | null = await HttpUtils.request('/operations?period=' + params);
+        let result: ResultResponseType | null = await HttpUtils.request('/operations?period=' + params);
         if (!result) {
             return
         }
@@ -127,7 +127,7 @@ export class Operations {
             return alert('Возникла ошибка при запросе категории. Обратитесь в поддержку');
         }
         this.ourOperations = result.response;
-        await this.showRecord(this.ourOperations);
+        await this.showRecord();
 
         return this.ourOperations;
     }
@@ -171,7 +171,7 @@ export class Operations {
                 const deleteLink = document.createElement('a');
                 deleteLink.classList.add("bi", "bi-trash", "text-secondary", "delete-links");
                 deleteLink.setAttribute('href', `/operations?id=${this.ourOperations[i].id}`)
-                deleteLink.addEventListener('click', () => {
+                deleteLink.addEventListener('click', (): void => {
                     this.openPopup(this.ourOperations[i].id)
                 });
                 trElement.insertCell().appendChild(editLink);
@@ -205,7 +205,7 @@ export class Operations {
     }
 
    private async deleteOperation(id:any): Promise<any> {
-        const result:RequestType = await HttpUtils.request('/operations/' + id, 'DELETE', true);
+        const result:ResultResponseType = await HttpUtils.request('/operations/' + id, 'DELETE', true);
         if (result.redirect) {
             return this.openNewRoute(result.redirect);
         }
@@ -215,7 +215,7 @@ export class Operations {
         return this.openNewRoute('/operations');
     }
 
-   private showRecords(): string | undefined {
+   private showRecords(): string | undefined{
         const popupElement: HTMLElement | null = document.getElementById('popup-container');
        if (!popupElement) {
            return

@@ -1,7 +1,6 @@
 import {HttpUtils} from "../utils/http-utils";
-import {RouteType} from "../types/route.type";
-import {RequestType} from "../types/request.type";
 import {OperationOriginalDataType} from "../types/operation-original-data.type";
+import {ResultResponseType} from "../types/result-response.type";
 
 export class CreateCategoriesIncomeExpenses {
     readonly categoryTypeElement: HTMLInputElement | null;
@@ -10,13 +9,11 @@ export class CreateCategoriesIncomeExpenses {
     readonly dateInputElement: HTMLInputElement | null;
     readonly commentInputElement: HTMLInputElement | null;
     readonly saveIncomeButtonElement: HTMLElement | null;
-    public operationOriginalData: OperationOriginalDataType | null;
-   
+    public operationOriginalData: any;
 
+    public openNewRoute: (url: string) => Promise<void>;
 
-    public openNewRoute: RouteType[];
-
-    constructor(openNewRoute: RouteType[]) {
+    constructor(openNewRoute: (url: string) => Promise<void>) {
         this.operationOriginalData = null;
         this.openNewRoute = openNewRoute;
 
@@ -43,8 +40,11 @@ export class CreateCategoriesIncomeExpenses {
         }
 
         categoryTypeElement.onchange = async function (): Promise<any> {
-            if ((categoryTypeElement.value === 'income' || categoryTypeElement.value === 'expense') && categoryTypeElement.value !== 'Тип...') {
-                let result = categoryTypeElement.value === 'income' ? await HttpUtils.request('/categories/income') : await HttpUtils.request('/categories/expense');
+            if ((categoryTypeElement.value === 'income' || categoryTypeElement.value === 'expense') || categoryTypeElement.value !== 'Тип...') {
+                let result: ResultResponseType | null = categoryTypeElement.value === 'income' ? await HttpUtils.request('/categories/income') : await HttpUtils.request('/categories/expense');
+                if (!result) {
+                    return
+                }
                 if (result.redirect) {
                     return that.openNewRoute(result.redirect);
                 }
@@ -53,7 +53,7 @@ export class CreateCategoriesIncomeExpenses {
                 }
                 that.operationOriginalData = result.response;
             }
-            that.showOperation(that.operationOriginalData);
+            that.showOperation();
             return that.operationOriginalData;
         }
         return this.operationOriginalData;
@@ -130,11 +130,11 @@ export class CreateCategoriesIncomeExpenses {
                 type: this.categoryTypeElement.value,
                 category_id: parseInt(this.categorySelectElement.value),
                 amount: parseInt(this.amountInputElement.value),
-                date: this.dateInputElement.value.toLocaleString('ru-RU'),
+                date: this.dateInputElement.value.toLocaleString(),
                 comment: this.commentInputElement.value
             };
 
-            const result: RequestType = await HttpUtils.request('/operations', 'POST', true, createData);
+            const result: ResultResponseType = await HttpUtils.request('/operations', 'POST', true, createData);
             if (result.redirect) {
                 return this.openNewRoute(result.redirect);
             }
