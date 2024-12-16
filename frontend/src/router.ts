@@ -210,7 +210,7 @@ export class Router {
    public async openNewRoute(url: string): Promise<void> {
         const currentRoute: string = window.location.pathname;
         history.pushState({}, '', url);
-        await this.activateRoute(currentRoute);
+        await this.activateRoute();
     }
 
    private async clickHandler(e: any): Promise<void> {
@@ -233,7 +233,8 @@ export class Router {
         }
     }
 
-   private async activateRoute(oldRoute: string | any = null): Promise<void> {
+   private async activateRoute(): Promise<void> {
+/*
         if (oldRoute) {
             const currentRoute: RouteType | undefined = this.routes.find(item => item.route === oldRoute);
             if (!currentRoute) {
@@ -245,7 +246,7 @@ export class Router {
                 currentRoute.unload();
             }
         }
-
+*/
         const urlRoute: string = window.location.pathname;
         const newRoute: RouteType | undefined = this.routes.find(item => item.route === urlRoute);
        if (!newRoute) {
@@ -314,8 +315,9 @@ export class Router {
         } else {
             console.log('No route found');
             history.pushState({}, '', '/404');
-            await this.activateRoute(null);
+           // await this.activateRoute(null);
         }
+
     }
 }
 

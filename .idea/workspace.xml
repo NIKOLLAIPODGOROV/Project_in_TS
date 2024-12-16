@@ -5,29 +5,8 @@
   </component>
   <component name="ChangeListManager">
     <list default="true" id="5833d54a-adaf-4b38-a1dd-8323fdd44132" name="Changes" comment="">
-      <change afterPath="$PROJECT_DIR$/frontend/src/types/openNewRoute.type.ts" afterDir="false" />
       <change beforePath="$PROJECT_DIR$/.idea/workspace.xml" beforeDir="false" afterPath="$PROJECT_DIR$/.idea/workspace.xml" afterDir="false" />
-      <change beforePath="$PROJECT_DIR$/frontend/node_modules/.package-lock.json" beforeDir="false" afterPath="$PROJECT_DIR$/frontend/node_modules/.package-lock.json" afterDir="false" />
-      <change beforePath="$PROJECT_DIR$/frontend/package-lock.json" beforeDir="false" afterPath="$PROJECT_DIR$/frontend/package-lock.json" afterDir="false" />
-      <change beforePath="$PROJECT_DIR$/frontend/package.json" beforeDir="false" afterPath="$PROJECT_DIR$/frontend/package.json" afterDir="false" />
-      <change beforePath="$PROJECT_DIR$/frontend/src/components/auth/login.ts" beforeDir="false" afterPath="$PROJECT_DIR$/frontend/src/components/auth/login.ts" afterDir="false" />
-      <change beforePath="$PROJECT_DIR$/frontend/src/components/auth/logout.ts" beforeDir="false" afterPath="$PROJECT_DIR$/frontend/src/components/auth/logout.ts" afterDir="false" />
-      <change beforePath="$PROJECT_DIR$/frontend/src/components/auth/sign-up.ts" beforeDir="false" afterPath="$PROJECT_DIR$/frontend/src/components/auth/sign-up.ts" afterDir="false" />
-      <change beforePath="$PROJECT_DIR$/frontend/src/components/balance.ts" beforeDir="false" afterPath="$PROJECT_DIR$/frontend/src/components/balance.ts" afterDir="false" />
-      <change beforePath="$PROJECT_DIR$/frontend/src/components/categories/categories-expense.ts" beforeDir="false" afterPath="$PROJECT_DIR$/frontend/src/components/categories/categories-expense.ts" afterDir="false" />
-      <change beforePath="$PROJECT_DIR$/frontend/src/components/categories/categories-income.ts" beforeDir="false" afterPath="$PROJECT_DIR$/frontend/src/components/categories/categories-income.ts" afterDir="false" />
-      <change beforePath="$PROJECT_DIR$/frontend/src/components/create-categories-expense.ts" beforeDir="false" afterPath="$PROJECT_DIR$/frontend/src/components/create-categories-expense.ts" afterDir="false" />
-      <change beforePath="$PROJECT_DIR$/frontend/src/components/create-categories-income-expenses.ts" beforeDir="false" afterPath="$PROJECT_DIR$/frontend/src/components/create-categories-income-expenses.ts" afterDir="false" />
-      <change beforePath="$PROJECT_DIR$/frontend/src/components/create-categories-income.ts" beforeDir="false" afterPath="$PROJECT_DIR$/frontend/src/components/create-categories-income.ts" afterDir="false" />
-      <change beforePath="$PROJECT_DIR$/frontend/src/components/edit-categories-expense.ts" beforeDir="false" afterPath="$PROJECT_DIR$/frontend/src/components/edit-categories-expense.ts" afterDir="false" />
-      <change beforePath="$PROJECT_DIR$/frontend/src/components/edit-categories-income-expenses.ts" beforeDir="false" afterPath="$PROJECT_DIR$/frontend/src/components/edit-categories-income-expenses.ts" afterDir="false" />
-      <change beforePath="$PROJECT_DIR$/frontend/src/components/edit-categories-income.ts" beforeDir="false" afterPath="$PROJECT_DIR$/frontend/src/components/edit-categories-income.ts" afterDir="false" />
-      <change beforePath="$PROJECT_DIR$/frontend/src/components/index.ts" beforeDir="false" afterPath="$PROJECT_DIR$/frontend/src/components/index.ts" afterDir="false" />
-      <change beforePath="$PROJECT_DIR$/frontend/src/components/operations.ts" beforeDir="false" afterPath="$PROJECT_DIR$/frontend/src/components/operations.ts" afterDir="false" />
-      <change beforePath="$PROJECT_DIR$/frontend/src/config/config.ts" beforeDir="false" afterPath="$PROJECT_DIR$/frontend/src/config/config.ts" afterDir="false" />
       <change beforePath="$PROJECT_DIR$/frontend/src/router.ts" beforeDir="false" afterPath="$PROJECT_DIR$/frontend/src/router.ts" afterDir="false" />
-      <change beforePath="$PROJECT_DIR$/frontend/src/types/operation-original-data.type.ts" beforeDir="false" afterPath="$PROJECT_DIR$/frontend/src/types/operation-original-data.type.ts" afterDir="false" />
-      <change beforePath="$PROJECT_DIR$/frontend/src/types/result-response.type.ts" beforeDir="false" afterPath="$PROJECT_DIR$/frontend/src/types/result-response.type.ts" afterDir="false" />
     </list>
     <option name="SHOW_DIALOG" value="false" />
     <option name="HIGHLIGHT_CONFLICTS" value="true" />
@@ -136,6 +115,11 @@
       <workItem from="1734170998007" duration="1386000" />
       <workItem from="1734172880905" duration="376000" />
       <workItem from="1734173351655" duration="494000" />
+      <workItem from="1734193981969" duration="224000" />
+      <workItem from="1734371021476" duration="1926000" />
+      <workItem from="1734373522387" duration="646000" />
+      <workItem from="1734374176974" duration="1087000" />
+      <workItem from="1734375358190" duration="375000" />
     </task>
     <servers />
   </component>
